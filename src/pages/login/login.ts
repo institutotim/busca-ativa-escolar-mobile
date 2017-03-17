@@ -1,34 +1,46 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import {NavController} from 'ionic-angular';
+import {LoadingController, NavController} from 'ionic-angular';
 import {AuthService} from "../../providers/auth.service";
 import {Storage} from "@ionic/storage";
 import {AuthHttp} from "angular2-jwt";
+import {TabsPage} from "../tabs/tabs";
 
 @Component({
 	selector: 'page-login',
 	templateUrl: 'login.html'
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
 
-	constructor(public navCtrl: NavController, public storage:Storage, public auth: AuthService, public http: AuthHttp) {}
+	loader: any;
+
+	constructor(
+		public navCtrl: NavController,
+		public loadingCtrl: LoadingController,
+		public auth: AuthService,
+		public http: AuthHttp,
+	) {}
+
+	ngOnInit() {
+		this.loader = this.loadingCtrl.create({
+			content: "Autenticando..."
+		});
+	}
 
 	login(email: string, password: string) {
+		this.loader.present();
 		this.auth.login(email, password).then(this.onLogin.bind(this), this.onError.bind(this));
 	}
 
 	onLogin(data: Object) {
+		this.loader.dismiss();
 		console.log("Logged in: ", data);
+		this.navCtrl.setRoot(TabsPage);
 	}
 
 	onError(data: Object) {
+		this.loader.dismiss();
 		console.error("Error: ", data);
-	}
-
-	testAuthRequest() {
-		this.http.get('http://api.busca-ativa-escolar.local/api/v1/user_preferences').toPromise().then(function( res) {
-			console.log("[auth request response] ",  res);
-		})
 	}
 
 }

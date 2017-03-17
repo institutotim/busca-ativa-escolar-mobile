@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Minhas atribuições</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+	  <button ion-item *ngFor="let child of attributions | async" (click)="openChild(child)" icon-left>
+		  <ion-icon name="person" item-left></ion-icon>
+		  <h2>{{child.name}}</h2>
+		  <p>{{children.renderAge(child)}}, {{children.renderGender(child)}}</p>
+	  </button>
+  </ion-list>
+</ion-content>

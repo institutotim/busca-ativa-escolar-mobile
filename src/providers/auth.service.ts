@@ -151,6 +151,11 @@ export class AuthService {
 		return this.user;
 	}
 
+	getUserID() : string {
+		if(!this.isLoggedIn()) return null;
+		return this.userID;
+	}
+
 	isLoggedIn() {
 		return (this.token && this.userID && !this.isTokenExpired());
 	}

@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 
-import { HomePage } from '../home/home';
-import { AboutPage } from '../about/about';
-import { ContactPage } from '../contact/contact';
 import {AuthService} from "../../providers/auth.service";
 import {NavController} from "ionic-angular";
 import {LoginPage} from "../login/login";
+import {MyAttributionsPage} from "../my-attributions/my-attributions";
 
 @Component({
   templateUrl: 'tabs.html'
@@ -13,9 +11,9 @@ import {LoginPage} from "../login/login";
 export class TabsPage {
   // this tells the tabs component which Pages
   // should be each tab's root Page
-  tab1Root: any = HomePage;
-  tab2Root: any = AboutPage;
-  tab3Root: any = ContactPage;
+  tab1Root: any = MyAttributionsPage;
+  tab2Root: any;
+  tab3Root: any;
 
   constructor(public navCtrl : NavController, public auth : AuthService) {}
 
