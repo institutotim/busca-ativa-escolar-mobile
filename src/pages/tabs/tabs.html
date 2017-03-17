@@ -1,0 +1,6 @@
+<ion-tabs>
+  <ion-tab [root]="tab1Root" tabTitle="Minhas atribuições" tabIcon="checkbox"></ion-tab>
+  <ion-tab [root]="tab2Root" tabTitle="Novo alerta" tabIcon="add-circle"></ion-tab>
+  <ion-tab [root]="tab3Root" tabTitle="Sincronizar" tabIcon="sync"></ion-tab>
+  <ion-tab (ionSelect)="logout()" tabTitle="Sair" tabIcon="exit"></ion-tab>
+</ion-tabs>

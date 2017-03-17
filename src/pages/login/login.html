@@ -1,0 +1,33 @@
+<ion-content padding>
+	<div style="height: 25px"></div>
+	<img src="/assets/images/logo_bae_signup.png" />
+	<div style="height: 25px"></div>
+
+	<form (ngSubmit)="login(email.value, password.value)">
+
+		<ion-card>
+			<ion-card-header color="primary">
+				Login no sistema
+			</ion-card-header>
+			<ion-list>
+				<ion-item-divider></ion-item-divider>
+				<ion-item icon-left>
+					<ion-label stacked>E-mail</ion-label>
+					<ion-input type="email" required #email placeholder="Digite seu e-mail de acesso..."></ion-input>
+				</ion-item>
+				<ion-item icon-left>
+					<ion-label stacked>Senha</ion-label>
+					<ion-input type="password" required #password placeholder="Digite sua senha...."></ion-input>
+				</ion-item>
+				<ion-item-divider></ion-item-divider>
+				<button ion-item color="primary" type="submit" block>
+					Entrar
+				</button>
+				<button ion-item color="primary" type="button" (click)="testAuthRequest()" block>
+					Test authenticated request
+				</button>
+			</ion-list>
+		</ion-card>
+
+	</form>
+</ion-content>
