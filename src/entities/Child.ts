@@ -10,6 +10,7 @@ export class Child {
 	risk_level: string;
 	gender: string;
 	age: number;
+	race: string;
 
 	current_case_id: string;
 

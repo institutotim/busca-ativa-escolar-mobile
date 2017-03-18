@@ -11,8 +11,12 @@ export class ChildrenService {
 
 	getUserAttributions(userID: string) : Observable<Child[]> {
 		return this.api
-			.post('children/search', {assigned_user_id: userID})
+				.post('children/search', {assigned_user_id: userID})
 			.map((data) => { return data.results; })
+	}
+
+	getAlert(childID: string) : Observable<any> {
+		return this.api.get('children/' + childID + '/alert')
 	}
 
 	renderGender(child: Child) : string {
@@ -28,6 +32,16 @@ export class ChildrenService {
 		if(!child.age) return 'idade desconhecida';
 		if(child.age === 1) return '1 ano';
 		return child.age + ' anos';
+	}
+
+	renderRace(child: Child) : string {
+		switch(child.race) {
+			case 'indigena': return 'Indígena';
+			case 'branca': return 'Branca';
+			case 'preta': return 'Preta';
+			case 'amarela': return 'Amarela';
+			default: case 'null': return 'Desconhecida';
+		}
 	}
 
 }

@@ -11,9 +11,10 @@ import {Child} from "../../entities/Child";
 	selector: 'page-child-view',
 	templateUrl: 'child-view.html'
 })
-export class ChildViewPage {
+export class ChildViewPage implements OnInit {
 
 	child: Child;
+	alert = {fields: {}};
 
 	constructor(
 		public navCtrl: NavController,
@@ -22,5 +23,17 @@ export class ChildViewPage {
 		public children: ChildrenService
 	) {
 		this.child = navParams.get('child');
+	}
+
+	ngOnInit() {
+		this.children
+			.getAlert(this.child.id)
+			.subscribe(
+				(alert) => { this.alert = alert}
+			);
+	}
+
+	renderLabel(field: string) : string {
+		return field;
 	}
 }
