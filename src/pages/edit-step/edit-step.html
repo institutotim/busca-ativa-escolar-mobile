@@ -1,0 +1,19 @@
+<ion-content>
+		<ion-card>
+			<ion-card-header>
+				<h1>{{child.name}}</h1>
+				<p>Editando pesquisa</p>
+			</ion-card-header>
+		</ion-card>
+
+		<ion-list>
+			<button ion-item clear color="primary" icon-left (click)="saveOnline()">
+				<ion-icon name="cloud-upload"></ion-icon>
+				Salvar online
+			</button>
+			<button ion-item clear color="primary" icon-left (click)="saveLocally()">
+				<ion-icon name="archive"></ion-icon>
+				Salvar rascunho no dispositivo
+			</button>
+		</ion-list>
+</ion-content>

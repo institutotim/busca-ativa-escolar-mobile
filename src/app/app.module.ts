@@ -11,12 +11,16 @@ import {MyAttributionsPage} from "../pages/my-attributions/my-attributions";
 import {APIService} from "../providers/api.service";
 import {ChildrenService} from "../providers/children.service";
 import {ChildViewPage} from "../pages/child-view/child-view";
+import {UtilsService} from "../providers/utils.service";
+import {StaticDataService} from "../providers/static-data.service";
+import {EditStepPage} from "../pages/edit-step/edit-step";
 @NgModule({
 	declarations: [
 		MyApp,
 		LoginPage,
 		MyAttributionsPage,
 		ChildViewPage,
+		EditStepPage,
 		TabsPage
 	],
 	imports: [
@@ -31,6 +35,7 @@ import {ChildViewPage} from "../pages/child-view/child-view";
 		LoginPage,
 		MyAttributionsPage,
 		ChildViewPage,
+		EditStepPage,
 		TabsPage
 	],
 	providers: [
@@ -38,6 +43,8 @@ import {ChildViewPage} from "../pages/child-view/child-view";
 		{provide: AuthService, useClass: AuthService},
 		{provide: APIService, useClass: APIService},
 		{provide: ChildrenService, useClass: ChildrenService},
+		{provide: StaticDataService, useClass: StaticDataService},
+		{provide: UtilsService, useClass: UtilsService},
 	]
 })
 export class AppModule {
