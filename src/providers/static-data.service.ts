@@ -14,15 +14,21 @@ export class StaticDataService {
 
 	get(key: string) : Observable<any> {
 		if(this.data) {
-			return Observable.create(() => {
-				return this.data[key];
-			});
+			console.log("[static_data] Resolving cached data for ", key, this.data[key]);
+
+			return Observable.of(this.data[key]);
 		}
+
+		console.log("[static_data] Fetching static data...");
 
 		return this.api
 			.get('static/static_data')
 			.map((data) => {
 				this.data = data.data;
+
+				console.log("[static_data] Data loaded: ", this.data);
+				console.log("[static_data] Resolving for ", key, this.data[key]);
+
 				return this.data[key];
 			})
 	}

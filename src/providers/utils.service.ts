@@ -9,4 +9,15 @@ export class UtilsService {
 		return obj;
 	}
 
+	objectToArray(obj: any) : Array<any> {
+		let arr = [];
+
+		for(var i in obj) {
+			if(!obj.hasOwnProperty(i)) continue;
+			arr.push(obj[i]);
+		}
+
+		return arr;
+	}
+
 }
