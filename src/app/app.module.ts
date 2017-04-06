@@ -14,6 +14,8 @@ import {ChildViewPage} from "../pages/child-view/child-view";
 import {UtilsService} from "../providers/utils.service";
 import {StaticDataService} from "../providers/static-data.service";
 import {EditStepPage} from "../pages/edit-step/edit-step";
+import {FormBuilderService} from "../providers/form-builder.service";
+
 @NgModule({
 	declarations: [
 		MyApp,
@@ -21,7 +23,7 @@ import {EditStepPage} from "../pages/edit-step/edit-step";
 		MyAttributionsPage,
 		ChildViewPage,
 		EditStepPage,
-		TabsPage
+		TabsPage,
 	],
 	imports: [
 		IonicModule.forRoot(MyApp),
@@ -45,6 +47,7 @@ import {EditStepPage} from "../pages/edit-step/edit-step";
 		{provide: ChildrenService, useClass: ChildrenService},
 		{provide: StaticDataService, useClass: StaticDataService},
 		{provide: UtilsService, useClass: UtilsService},
+		{provide: FormBuilderService, useClass: FormBuilderService},
 	]
 })
 export class AppModule {

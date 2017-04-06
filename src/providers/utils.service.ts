@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Pipe, PipeTransform} from "@angular/core";
 
 @Injectable()
 export class UtilsService {
@@ -12,7 +12,7 @@ export class UtilsService {
 	objectToArray(obj: any) : Array<any> {
 		let arr = [];
 
-		for(var i in obj) {
+		for(let i in obj) {
 			if(!obj.hasOwnProperty(i)) continue;
 			arr.push(obj[i]);
 		}

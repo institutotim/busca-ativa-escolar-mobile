@@ -46,7 +46,9 @@
 				<ion-label stacked>{{renderLabel('alert_cause_id')}}</ion-label>
 				<ion-input type="text" readonly [value]="renderAlertCause(alert.fields.alert_cause_id)"></ion-input>
 			</ion-item>
+		</ion-list>
 
+		<ion-list>
 			<ion-list-header>Dados dos pais ou responsáveis</ion-list-header>
 			<ion-item [hidden]="!alert.fields.mother_name">
 				<ion-label stacked>{{renderLabel('mother_name')}}</ion-label>
@@ -72,96 +74,9 @@
 				<ion-label stacked>{{renderLabel('father_phone')}}</ion-label>
 				<ion-input type="text" readonly [value]="alert.fields.father_phone"></ion-input>
 			</ion-item>
+		</ion-list>
 
-			<ion-list-header>Localização</ion-list-header>
-			<ion-item [hidden]="!alert.fields.place_address">
-				<ion-label stacked>{{renderLabel('place_address')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.place_address"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.place_cep">
-				<ion-label stacked>{{renderLabel('place_cep')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.place_cep"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.place_reference">
-				<ion-label stacked>{{renderLabel('place_reference')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.place_reference"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.place_neighborhood">
-				<ion-label stacked>{{renderLabel('place_neighborhood')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.place_neighborhood"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.place_city">
-				<ion-label stacked>{{renderLabel('place_city')}}</ion-label>
-				<ion-input type="text" readonly [value]="renderCity(alert.fields.place_city)"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.place_phone">
-				<ion-label stacked>{{renderLabel('place_phone')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.place_phone"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.place_mobile">
-				<ion-label stacked>{{renderLabel('place_mobile')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.place_mobile"></ion-input>
-			</ion-item>
-			<ion-list-header>Dados da criança ou adolescente</ion-list-header>
-			<ion-item [hidden]="!alert.fields.name">
-				<ion-label stacked>{{renderLabel('name')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.name"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.gender">
-				<ion-label stacked>{{renderLabel('gender')}}</ion-label>
-				<ion-input type="text" readonly [value]="children.renderGender(child)"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.race">
-				<ion-label stacked>{{renderLabel('race')}}</ion-label>
-				<ion-input type="text" readonly [value]="children.renderRace(child)"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.dob">
-				<ion-label stacked>{{renderLabel('dob')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.dob"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.rg">
-				<ion-label stacked>{{renderLabel('rg')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.rg"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.cpf">
-				<ion-label stacked>{{renderLabel('cpf')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.cpf"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.nis">
-				<ion-label stacked>{{renderLabel('nis')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.nis"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.alert_cause_id">
-				<ion-label stacked>{{renderLabel('alert_cause_id')}}</ion-label>
-				<ion-input type="text" readonly [value]="renderAlertCause(alert.fields.alert_cause_id)"></ion-input>
-			</ion-item>
-
-			<ion-list-header>Dados dos pais ou responsáveis</ion-list-header>
-			<ion-item [hidden]="!alert.fields.mother_name">
-				<ion-label stacked>{{renderLabel('mother_name')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.mother_name"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.mother_rg">
-				<ion-label stacked>{{renderLabel('mother_rg')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.mother_rg"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.mother_phone">
-				<ion-label stacked>{{renderLabel('mother_phone')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.mother_phone"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.father_name">
-				<ion-label stacked>{{renderLabel('father_name')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.father_name"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.father_rg">
-				<ion-label stacked>{{renderLabel('father_rg')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.father_rg"></ion-input>
-			</ion-item>
-			<ion-item [hidden]="!alert.fields.father_phone">
-				<ion-label stacked>{{renderLabel('father_phone')}}</ion-label>
-				<ion-input type="text" readonly [value]="alert.fields.father_phone"></ion-input>
-			</ion-item>
-
+		<ion-list>
 			<ion-list-header>Localização</ion-list-header>
 			<ion-item [hidden]="!alert.fields.place_address">
 				<ion-label stacked>{{renderLabel('place_address')}}</ion-label>

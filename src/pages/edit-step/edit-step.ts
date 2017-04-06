@@ -6,6 +6,8 @@ import {ChildrenService} from "../../providers/children.service";
 import {Child} from "../../entities/Child";
 import {StaticDataService} from "../../providers/static-data.service";
 import {UtilsService} from "../../providers/utils.service";
+import {Form, FormBuilderService} from "../../providers/form-builder.service";
+import {Observable} from "rxjs";
 
 @Component({
 	selector: 'page-edit-step',
@@ -15,6 +17,8 @@ export class EditStepPage implements OnInit {
 
 	child: Child;
 	step: any;
+	form: Form;
+	formTree: Array<any> = [];
 
 	genders = [];
 	races = [];
@@ -27,6 +31,7 @@ export class EditStepPage implements OnInit {
 		public children: ChildrenService,
 	    public utils: UtilsService,
 	    public staticData: StaticDataService,
+	    public formBuilder: FormBuilderService,
 	) {
 		this.child = navParams.get('child');
 	}
@@ -37,19 +42,11 @@ export class EditStepPage implements OnInit {
 			this.fields = this.step.fields;
 		});
 
-		this.staticData.get('Gender').subscribe((genders) => {
-			this.genders = this.utils.objectToArray(genders);
-			console.log("genders=", this.genders);
-		});
-
-		this.staticData.get('Race').subscribe((races) => {
-			this.races = this.utils.objectToArray(races);
-			console.log("races=", this.races);
-		});
-	}
-
-	renderLabel(field: string) : string {
-		return field;
+		this.formBuilder.getForm('pesquisa')
+			.subscribe((form) => {
+				this.form = form;
+				this.formTree = form.getTree();
+			})
 	}
 
 	saveLocally() {

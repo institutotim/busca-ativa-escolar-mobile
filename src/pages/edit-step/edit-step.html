@@ -11,118 +11,48 @@
 		</ion-card-header>
 	</ion-card>
 
-	<ion-list>
+	<ion-list *ngFor="let group of formTree">
 
-		<ion-list-header>Dados da criança ou adolescente</ion-list-header>
+		<ion-list-header [hidden]="!group.label || group.label.length <= 0">{{group.label}}</ion-list-header>
 
+		<div *ngFor="let field of form.getGroupFields(group)" [hidden]="!form.shouldDisplay(group.name, field.name, fields)">
+			<ion-item *ngIf="field.type === 'string'">
+				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}} (type={{field.type}})</ion-label>
+				<ion-input type="text" [(ngModel)]="fields[field.name]"></ion-input>
+			</ion-item>
+			<ion-item *ngIf="field.type === 'date'">
+				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}} (type={{field.type}})</ion-label>
+				<ion-input type="date" [(ngModel)]="fields[field.name]"></ion-input>
+			</ion-item>
+			<ion-item *ngIf="field.type === 'number'">
+				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}} (type={{field.type}})</ion-label>
+				<ion-input type="number" [(ngModel)]="fields[field.name]"></ion-input>
+			</ion-item>
+			<ion-item *ngIf="field.type === 'alphanum'">
+				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}} (type={{field.type}})</ion-label>
+				<ion-input type="tel" [(ngModel)]="fields[field.name]"></ion-input>
+			</ion-item>
+			<ion-item *ngIf="field.type === 'boolean'">
+				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}} (type={{field.type}})</ion-label>
+				<ion-toggle [(ngModel)]="fields[field.name]"></ion-toggle>
+			</ion-item>
+			<ion-item *ngIf="field.type === 'select'">
+				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}} (type={{field.type}})</ion-label>
+				<ion-select [(ngModel)]="fields[field.name]">
+					<ion-option *ngFor="let option of form.getFieldOptions(field)" value="{{option[field.options.key]}}">{{option[field.options.label]}}</ion-option>
+				</ion-select>
+			</ion-item>
+			<div *ngIf="field.type === 'multiple'">
+				<ion-item>
+					<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}} (type={{field.type}})</ion-label>
+				</ion-item>
+				<ion-item *ngFor="let option of form.getFieldOptions(field)">
+					<ion-label >{{option[field.options.label]}}</ion-label>
+					<ion-checkbox [checked]="form.isMultipleChecked(field, option, fields)" (click)="form.handleMultipleClick(field, option, fields)"></ion-checkbox>
+				</ion-item>
+			</div>
+		</div>
 
-		<ion-item>
-			<ion-label stacked>{{renderLabel('name')}}</ion-label>
-			<ion-input type="text" [(ngModel)]="fields.name"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('gender')}}</ion-label>
-			<ion-select [(ngModel)]="fields.gender">
-				<ion-option *ngFor="let gender of genders" [value]="gender.slug">{{gender.label}}</ion-option>
-			</ion-select>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('race')}}</ion-label>
-			<ion-select [(ngModel)]="fields.race">
-				<ion-option *ngFor="let race of races" [value]="race.slug">{{race.label}}</ion-option>
-			</ion-select>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('dob')}}</ion-label>
-			<ion-datetime [(ngModel)]="fields.dob"></ion-datetime>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('rg')}}</ion-label>
-			<ion-input type="tel" [(ngModel)]="fields.rg"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('cpf')}}</ion-label>
-			<ion-input type="tel" [(ngModel)]="fields.cpf"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('nis')}}</ion-label>
-			<ion-input type="tel" [(ngModel)]="fields.nis"></ion-input>
-		</ion-item>
-
-		<ion-list-header>Dados dos pais ou responsáveis</ion-list-header>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('mother_name')}}</ion-label>
-			<ion-input type="text" [(ngModel)]="fields.mother_name"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('mother_rg')}}</ion-label>
-			<ion-input type="tel" [(ngModel)]="fields.mother_rg"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('mother_phone')}}</ion-label>
-			<ion-input type="tel" [(ngModel)]="fields.mother_phone"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('father_name')}}</ion-label>
-			<ion-input type="text" [(ngModel)]="fields.father_name"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('father_rg')}}</ion-label>
-			<ion-input type="tel" [(ngModel)]="fields.father_rg"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('father_phone')}}</ion-label>
-			<ion-input type="tel" [(ngModel)]="fields.father_phone"></ion-input>
-		</ion-item>
-
-		<ion-list-header>Localização</ion-list-header>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('place_address')}}</ion-label>
-			<ion-input type="text" [(ngModel)]="fields.place_address"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('place_cep')}}</ion-label>
-			<ion-input type="tel" [(ngModel)]="fields.place_cep"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('place_reference')}}</ion-label>
-			<ion-input type="text" [(ngModel)]="fields.place_reference"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('place_neighborhood')}}</ion-label>
-			<ion-input type="text" [(ngModel)]="fields.place_neighborhood"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('place_city')}}</ion-label>
-
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('place_phone')}}</ion-label>
-			<ion-input type="text" [(ngModel)]="fields.place_phone"></ion-input>
-		</ion-item>
-
-		<ion-item>
-			<ion-label stacked>{{renderLabel('place_mobile')}}</ion-label>
-			<ion-input type="text" [(ngModel)]="fields.place_mobile"></ion-input>
-		</ion-item>
 	</ion-list>
 
 	<ion-list>
