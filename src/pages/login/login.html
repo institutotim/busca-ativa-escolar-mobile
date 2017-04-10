@@ -6,20 +6,18 @@
 	<form (ngSubmit)="login(email.value, password.value)">
 
 		<ion-card>
-			<ion-card-header color="primary">
+			<ion-card-header color="primary" block>
 				Login no sistema
 			</ion-card-header>
 			<ion-list>
-				<ion-item-divider></ion-item-divider>
-				<ion-item icon-left>
+				<ion-item icon-left padding-vertical>
 					<ion-label stacked>E-mail</ion-label>
 					<ion-input type="email" required #email placeholder="Digite seu e-mail de acesso..."></ion-input>
 				</ion-item>
-				<ion-item icon-left>
+				<ion-item icon-left padding-vertical>
 					<ion-label stacked>Senha</ion-label>
 					<ion-input type="password" required #password placeholder="Digite sua senha...."></ion-input>
 				</ion-item>
-				<ion-item-divider></ion-item-divider>
 				<button ion-item color="primary" type="submit" block>
 					Entrar
 				</button>

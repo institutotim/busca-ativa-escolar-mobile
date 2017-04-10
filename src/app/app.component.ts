@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {Platform} from 'ionic-angular';
+import {NavController, Platform} from 'ionic-angular';
 import {StatusBar, Splashscreen} from 'ionic-native';
 
 import {TabsPage} from '../pages/tabs/tabs';
 import {LoginPage} from "../pages/login/login";
 import {AuthService} from "../providers/auth.service";
+import {APIService} from "../providers/api.service";
 
 
 @Component({
@@ -14,7 +15,11 @@ export class MyApp {
 
 	rootPage : any;
 
-	constructor(platform: Platform, auth: AuthService) {
+	constructor(
+		platform: Platform,
+		auth: AuthService,
+	    api: APIService,
+	) {
 		platform.ready().then(() => {
 			StatusBar.styleDefault();
 			Splashscreen.hide();
@@ -31,4 +36,5 @@ export class MyApp {
 
 		});
 	}
+
 }
