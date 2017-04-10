@@ -30,7 +30,7 @@ export class LoginPage implements OnInit {
 
 	login(email: string, password: string) {
 		this.loader.present();
-		//this.auth.login(email, password).then(this.onLogin.bind(this), this.onError.bind(this));
+		this.auth.login(email, password).then(this.onLogin.bind(this), this.onError.bind(this));
 	}
 
 	onLogin(data: Object) {
