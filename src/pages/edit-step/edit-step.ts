@@ -54,6 +54,25 @@ export class EditStepPage implements OnInit {
 	}
 
 	saveOnline() {
+
+		for(let index in this.formTree) {
+			if(!this.formTree.hasOwnProperty(index)) continue;
+
+			let group = this.formTree[index];
+			let fields = group.fields;
+
+			for(let field in fields) {
+				if(!fields.hasOwnProperty(field)) continue;
+				let f = fields[field];
+
+				if(f.type === 'model_field') {
+					if(!this.fields[f.options.key]) continue;
+					this.fields[field] = this.fields[f.options.key][f.options.field]
+				}
+			}
+
+		}
+
 		this.children.updateStepFields(this.step);
 	}
 }
