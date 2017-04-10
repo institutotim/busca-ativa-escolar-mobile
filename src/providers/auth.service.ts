@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Storage} from "@ionic/storage";
+import {APIService} from "./api.service";
 
 @Injectable()
 export class AuthService {
@@ -15,9 +16,11 @@ export class AuthService {
 		refresh: number
 	};
 
-	tokenURI : string = 'http://api.busca-ativa-escolar.local/api/auth/token';
-
-	constructor(public http: Http, protected storage: Storage) {}
+	constructor(
+		public http: Http,
+		protected storage: Storage,
+	    protected api: APIService,
+	) {}
 
 	provideToken() : Promise<string> {
 		// Isn't even logged in
@@ -55,7 +58,7 @@ export class AuthService {
 		};
 
 		return this.http
-			.post(this.tokenURI, tokenRequest, options)
+			.post(this.api.getTokenURI(), tokenRequest, options)
 			.toPromise()
 			.then(this.handleAuthResponse.bind(this), this.handleAuthError.bind(this));
 	}
@@ -73,7 +76,7 @@ export class AuthService {
 		};
 
 		return this.http
-			.post(this.tokenURI, tokenRequest, options)
+			.post(this.api.getTokenURI(), tokenRequest, options)
 			.toPromise()
 			.then(this.handleAuthResponse.bind(this), this.handleAuthError.bind(this));
 	};
