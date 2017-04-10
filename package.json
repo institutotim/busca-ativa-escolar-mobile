@@ -1,7 +1,7 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "busca-ativa-escolar-web",
+  "author": "LQDI Digital",
+  "homepage": "http://lqdi.net/",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",

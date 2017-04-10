@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.buscaativaescolarmobile303438" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>busca-ativa-escolar-mobile</name>
-  <description>An awesome Ionic/Cordova app.</description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+<widget id="br.com.lqdi.busca-ativa-escolar-mobile" version="0.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Busca Ativa Escolar</name>
+  <description>Aplicativo da plataform Busca Ativa Escolar para agentes comunitários e técnicos verificadores.</description>
+  <author email="contato@lqdi.net" href="http://lqdi.net/">LQDI</author>
   <content src="index.html"/>
   <access origin="*"/>
   <allow-navigation href="http://ionic.local/*"/>

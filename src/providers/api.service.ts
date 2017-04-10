@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {AuthHttp} from "angular2-jwt";
+import API_ROOT from "../env_api_root";
 
 @Injectable()
 export class APIService {
@@ -8,11 +9,11 @@ export class APIService {
 	constructor(public http: AuthHttp) {}
 
 	getURI() {
-		return 'http://api.busca-ativa-escolar.local/api/v1/';
+		return API_ROOT + 'api/v1/';
 	}
 
 	getTokenURI() {
-		return 'http://api.busca-ativa-escolar.local/api/auth/token';
+		return API_ROOT + 'api/auth/token';
 	}
 
 	post(path: string, data?: any, isAbsoluteURL: boolean = false) : Observable<any> {
