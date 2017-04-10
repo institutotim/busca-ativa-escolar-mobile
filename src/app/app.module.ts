@@ -15,6 +15,7 @@ import {UtilsService} from "../providers/utils.service";
 import {StaticDataService} from "../providers/static-data.service";
 import {EditStepPage} from "../pages/edit-step/edit-step";
 import {FormBuilderService} from "../providers/form-builder.service";
+import {EntityPickerModal} from "../pages/modals/entity-picker/entity-picker";
 
 @NgModule({
 	declarations: [
@@ -24,6 +25,7 @@ import {FormBuilderService} from "../providers/form-builder.service";
 		ChildViewPage,
 		EditStepPage,
 		TabsPage,
+		EntityPickerModal,
 	],
 	imports: [
 		IonicModule.forRoot(MyApp),
@@ -38,7 +40,8 @@ import {FormBuilderService} from "../providers/form-builder.service";
 		MyAttributionsPage,
 		ChildViewPage,
 		EditStepPage,
-		TabsPage
+		TabsPage,
+		EntityPickerModal,
 	],
 	providers: [
 		{provide: ErrorHandler, useClass: IonicErrorHandler},

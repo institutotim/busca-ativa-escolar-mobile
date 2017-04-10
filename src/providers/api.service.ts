@@ -15,9 +15,9 @@ export class APIService {
 		return 'http://api.busca-ativa-escolar.local/api/auth/token';
 	}
 
-	post(path: string, data?: any) : Observable<any> {
+	post(path: string, data?: any, isAbsoluteURL: boolean = false) : Observable<any> {
 		return this.http
-			.post(this.getURI() + path, data)
+			.post((!isAbsoluteURL ? this.getURI() : '') + path, data)
 			.map((data) => {
 				return data ? data.json() : Observable.empty();
 			});

@@ -12,7 +12,7 @@ export class ChildrenService {
 	getUserAttributions(userID: string) : Observable<Child[]> {
 		return this.api
 				.post('children/search', {assigned_user_id: userID, current_step_type: 'BuscaAtivaEscolar\\CaseSteps\\Pesquisa'})
-			.map((data) => { return data.results; })
+				.map((data) => { return data.results; })
 	}
 
 	getAlert(childID: string) : Observable<any> {

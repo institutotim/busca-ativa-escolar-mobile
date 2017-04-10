@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{params.get('title')}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+	<ion-searchbar placeholder="Buscar..." [(ngModel)]="query" (ionInput)="fetchItems($event)"></ion-searchbar>
+	<ion-list>
+		<button ion-item *ngFor="let item of items" (click)="selectItem(item)">
+			{{renderItem(item)}}
+		</button>
+	</ion-list>
+</ion-content>

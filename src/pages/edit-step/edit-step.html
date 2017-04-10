@@ -51,6 +51,10 @@
 					<ion-checkbox [checked]="form.isMultipleChecked(field, option, fields)" (click)="form.handleMultipleClick(field, option, fields)"></ion-checkbox>
 				</ion-item>
 			</div>
+			<button ion-item *ngIf="field.type === 'model'" (click)="form.handleModelClick(field, fields)">
+				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}} (type={{field.type}})</ion-label>
+				<ion-input readonly type="text" value="{{form.renderModelValue(field, fields)}}"></ion-input>
+			</button>
 		</div>
 
 	</ion-list>

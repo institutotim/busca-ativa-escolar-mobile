@@ -4,6 +4,8 @@ import {Observable} from "rxjs";
 import {APIService} from "./api.service";
 import {AuthHttp} from "angular2-jwt";
 import {UtilsService} from "./utils.service";
+import {ModalController} from "ionic-angular";
+import {EntityPickerModal} from "../pages/modals/entity-picker/entity-picker";
 
 @Injectable()
 export class FormBuilderService {
@@ -13,14 +15,15 @@ export class FormBuilderService {
 	constructor(
 		public http: AuthHttp,
 		public api: APIService,
-		public utils: UtilsService
+		public utils: UtilsService,
+		public modals: ModalController,
 	) {}
 
 	getForm(form: string) : Observable<Form> {
 		return this.api
 			.get('integration/forms/' + form)
 			.map((data) => {
-				this.forms[form] = new Form(form, data.form, this.utils);
+				this.forms[form] = new Form(form, data.form, this.utils, this.modals, this.api);
 				return this.forms[form];
 			})
 	}
@@ -39,7 +42,9 @@ export class Form {
 	constructor(
 		public formName: string,
 		public form : Object,
-		public utils: UtilsService
+		public utils: UtilsService,
+		public modals: ModalController,
+	    public api: APIService,
 	) {}
 
 	shouldDisplay(group: string, field: string, data: Object) : boolean {
@@ -92,6 +97,39 @@ export class Form {
 		return (data[field.name].indexOf(option[field.options.key]) !== -1);
 	}
 
+	handleModelClick(field:any, data:any) {
+
+		let modal = this.modals.create(EntityPickerModal, {
+			title: 'Selecione: ' + field.label,
+			items: (query) => {
+				let searchParams = {};
+				searchParams[field.options.search_by] = query;
+				return this.api
+					.post(field.options.source, searchParams, true)
+					.map((items) => {
+						if(!field.options.list_key) return items;
+						return items[field.options.list_key];
+					})
+			},
+			render: (item) => {
+				return item[field.options.label];
+			}
+		});
+
+		modal.onDidDismiss((item) => {
+			console.log("Selected: ", item, field.name, field.options.key, item[field.options.key]);
+
+			data[field.name] = item[field.options.key];
+
+			if(field.options.key_as) {
+				data[field.options.key_as] = item;
+			}
+		});
+
+		modal.present();
+
+	}
+
 	handleMultipleClick(field: any, option: any, data: any) {
 		if(!data) data = {};
 		if(!data[field.name]) data[field.name] = [];
@@ -106,6 +144,18 @@ export class Form {
 
 		data[field.name].push(value); // Add to list
 
+	}
+
+	renderModelValue(field: any, data: any) {
+		if(!field.options.key_as || !field.options.label) {
+			return data[field.name] || '';
+		}
+
+		if(!data[field.options.key_as]) {
+			return '';
+		}
+
+		return data[field.options.key_as][field.options.label];
 	}
 
 }
