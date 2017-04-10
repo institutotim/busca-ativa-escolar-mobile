@@ -1,11 +1,9 @@
-import {Injectable, ViewChild} from "@angular/core";
+import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {AuthHttp} from "angular2-jwt";
 import API_ROOT from "../env_api_root";
-import {Response} from "@angular/http";
-import {IonicApp, NavController} from "ionic-angular";
+import {NavController} from "ionic-angular";
 import {LoginPage} from "../pages/login/login";
-import {MyApp} from "../app/app.component";
 
 @Injectable()
 export class APIService {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 
 import {LoadingController, NavController} from 'ionic-angular';
 import {AuthService} from "../../providers/auth.service";
@@ -19,7 +19,6 @@ export class LoginPage implements OnInit {
 		public navCtrl: NavController,
 		public loadingCtrl: LoadingController,
 		public auth: AuthService,
-		public http: AuthHttp,
 		public api: APIService,
 	) {}
 
@@ -31,7 +30,7 @@ export class LoginPage implements OnInit {
 
 	login(email: string, password: string) {
 		this.loader.present();
-		this.auth.login(email, password).then(this.onLogin.bind(this), this.onError.bind(this));
+		//this.auth.login(email, password).then(this.onLogin.bind(this), this.onError.bind(this));
 	}
 
 	onLogin(data: Object) {

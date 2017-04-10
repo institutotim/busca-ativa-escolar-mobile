@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Storage} from "@ionic/storage";
-import {APIService} from "./api.service";
+import API_ROOT from "../env_api_root";
 
 @Injectable()
 export class AuthService {
@@ -16,10 +16,11 @@ export class AuthService {
 		refresh: number
 	};
 
+	tokenURI : string = API_ROOT + 'api/auth/token';
+
 	constructor(
 		public http: Http,
-		protected storage: Storage,
-	    protected api: APIService,
+		protected storage: Storage
 	) {}
 
 	provideToken() : Promise<string> {
@@ -58,7 +59,7 @@ export class AuthService {
 		};
 
 		return this.http
-			.post(this.api.getTokenURI(), tokenRequest, options)
+			.post(this.tokenURI, tokenRequest, options)
 			.toPromise()
 			.then(this.handleAuthResponse.bind(this), this.handleAuthError.bind(this));
 	}
@@ -76,7 +77,7 @@ export class AuthService {
 		};
 
 		return this.http
-			.post(this.api.getTokenURI(), tokenRequest, options)
+			.post(this.tokenURI, tokenRequest, options)
 			.toPromise()
 			.then(this.handleAuthResponse.bind(this), this.handleAuthError.bind(this));
 	};
