@@ -5,6 +5,7 @@ import {AuthService} from "../../providers/auth.service";
 import {Storage} from "@ionic/storage";
 import {AuthHttp} from "angular2-jwt";
 import {TabsPage} from "../tabs/tabs";
+import {APIService} from "../../providers/api.service";
 
 @Component({
 	selector: 'page-login',
@@ -19,6 +20,7 @@ export class LoginPage implements OnInit {
 		public loadingCtrl: LoadingController,
 		public auth: AuthService,
 		public http: AuthHttp,
+		public api: APIService,
 	) {}
 
 	ngOnInit() {
