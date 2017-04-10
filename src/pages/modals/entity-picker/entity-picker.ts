@@ -51,6 +51,10 @@ export class EntityPickerModal implements OnInit {
 		return this.params.get('render')(item);
 	}
 
+	cancel() {
+		return this.viewCtrl.dismiss();
+	}
+
 	selectItem(item: any) {
 		return this.viewCtrl.dismiss(item);
 	}

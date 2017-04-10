@@ -117,6 +117,9 @@ export class Form {
 		});
 
 		modal.onDidDismiss((item) => {
+
+			if(!item) return;
+
 			console.log("Selected: ", item, field.name, field.options.key, item[field.options.key]);
 
 			data[field.name] = item[field.options.key];
@@ -124,6 +127,7 @@ export class Form {
 			if(field.options.key_as) {
 				data[field.options.key_as] = item;
 			}
+
 		});
 
 		modal.present();

@@ -1,7 +1,12 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>{{params.get('title')}}</ion-title>
-  </ion-navbar>
+	<ion-navbar>
+		<ion-buttons start>
+		    <button ion-button icon-only (click)="cancel()">
+				<ion-icon name="arrow-back"></ion-icon>
+			</button>
+		</ion-buttons>
+		<ion-title>{{params.get('title')}}</ion-title>
+	</ion-navbar>
 </ion-header>
 <ion-content>
 	<ion-searchbar placeholder="Buscar..." [(ngModel)]="query" (ionInput)="fetchItems($event)"></ion-searchbar>
