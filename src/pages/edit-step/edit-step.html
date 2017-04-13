@@ -1,6 +1,12 @@
 <ion-header>
 	<ion-navbar>
 		<ion-title>Editar pesquisa</ion-title>
+
+		<ion-buttons end>
+			<button ion-button icon-left (click)="saveOnline()">
+				<ion-icon name="cloud-upload"></ion-icon> Salvar
+			</button>
+		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 <ion-content>
@@ -11,61 +17,16 @@
 		</ion-card-header>
 	</ion-card>
 
-	<ion-list *ngFor="let group of formTree">
-
-		<ion-list-header [hidden]="!group.label || group.label.length <= 0">{{group.label}}</ion-list-header>
-
-		<div *ngFor="let field of form.getGroupFields(group)" [hidden]="!form.shouldDisplay(group.name, field.name, fields)">
-			<ion-item *ngIf="field.type === 'string'">
-				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				<ion-input type="text" [(ngModel)]="fields[field.name]"></ion-input>
-			</ion-item>
-			<ion-item *ngIf="field.type === 'date'">
-				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				<ion-input type="date" [(ngModel)]="fields[field.name]"></ion-input>
-			</ion-item>
-			<ion-item *ngIf="field.type === 'number'">
-				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				<ion-input type="number" [(ngModel)]="fields[field.name]"></ion-input>
-			</ion-item>
-			<ion-item *ngIf="field.type === 'alphanum'">
-				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				<ion-input type="tel" [(ngModel)]="fields[field.name]"></ion-input>
-			</ion-item>
-			<ion-item *ngIf="field.type === 'boolean'">
-				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				<ion-toggle [(ngModel)]="fields[field.name]"></ion-toggle>
-			</ion-item>
-			<ion-item *ngIf="field.type === 'select'">
-				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				<ion-select [(ngModel)]="fields[field.name]">
-					<ion-option *ngFor="let option of form.getFieldOptions(field)" value="{{option[field.options.key]}}">{{option[field.options.label]}}</ion-option>
-				</ion-select>
-			</ion-item>
-			<div *ngIf="field.type === 'multiple'">
-				<ion-item>
-					<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				</ion-item>
-				<ion-item *ngFor="let option of form.getFieldOptions(field)">
-					<ion-label >{{option[field.options.label]}}</ion-label>
-					<ion-checkbox [checked]="form.isMultipleChecked(field, option, fields)" (click)="form.handleMultipleClick(field, option, fields)"></ion-checkbox>
-				</ion-item>
-			</div>
-			<button ion-item *ngIf="field.type === 'model'" (click)="form.handleModelClick(field, fields)">
-				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				<ion-input readonly type="text" value="{{form.renderModelValue(field, fields)}}"></ion-input>
-			</button>
-		</div>
-	</ion-list>
+	<form-editor *ngIf="form" [formTree]="formTree" [form]="form" [fields]="fields"></form-editor>
 
 	<ion-list>
 		<button ion-item clear color="primary" icon-left (click)="saveOnline()">
 			<ion-icon name="cloud-upload"></ion-icon>
-			Salvar online
+			Salvar
 		</button>
-		<button ion-item clear color="primary" icon-left (click)="saveLocally()">
-			<ion-icon name="archive"></ion-icon>
-			Salvar rascunho no dispositivo
+		<button ion-item clear color="success" icon-left (click)="saveAndComplete()">
+			<ion-icon name="cloud-upload"></ion-icon>
+			Salvar e concluir Pesquisa
 		</button>
 	</ion-list>
 </ion-content>

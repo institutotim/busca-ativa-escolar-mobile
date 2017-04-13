@@ -1,0 +1,18 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Novo alerta</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+
+	<form-editor *ngIf="form" [formTree]="formTree" [form]="form" [fields]="fields"></form-editor>
+
+	<ion-list>
+		<button ion-item clear color="primary" icon-left (click)="save()">
+			<ion-icon name="cloud-upload"></ion-icon>
+			Enviar alerta
+		</button>
+	</ion-list>
+
+</ion-content>

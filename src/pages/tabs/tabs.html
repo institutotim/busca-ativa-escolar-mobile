@@ -1,5 +1,5 @@
 <ion-tabs>
-  <ion-tab [root]="tab1Root" tabTitle="Minhas atribuições" tabIcon="checkbox"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="Novo alerta" tabIcon="add-circle"></ion-tab>
-  <ion-tab (ionSelect)="logout()" tabTitle="Sair" tabIcon="exit"></ion-tab>
+  <ion-tab [root]="tab1Root" tabTitle="Novo alerta" tabIcon="add-circle"></ion-tab>
+  <ion-tab [root]="tab2Root" *ngIf="!isAgenteComunitario()" tabTitle="Minhas atribuições" tabIcon="checkbox"></ion-tab>
+  <ion-tab *ngIf="true" (ionSelect)="logout()" tabTitle="Sair" tabIcon="exit"></ion-tab>
 </ion-tabs>

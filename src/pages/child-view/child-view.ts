@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {NavController, NavParams} from 'ionic-angular';
+import {Events, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {AuthHttp} from "angular2-jwt";
 import {AuthService} from "../../providers/auth.service";
 import {Observable} from "rxjs";
@@ -47,9 +47,14 @@ export class ChildViewPage implements OnInit {
 		place_mobile: 'Celular',
 	};
 
+	loader: any;
+	isLoaded = false;
+
 	constructor(
 		public navCtrl: NavController,
 		public navParams: NavParams,
+		public events: Events,
+		public loadCtrl: LoadingController,
 		public auth: AuthService,
 		public children: ChildrenService,
 		public staticData: StaticDataService,
@@ -58,15 +63,52 @@ export class ChildViewPage implements OnInit {
 	}
 
 	ngOnInit() {
+		this.loadChildData();
+
+		this.events.subscribe("stepCompleted", () => {
+			this.loadChildData();
+		})
+	}
+
+	setLoading(message) {
+		this.loader = this.loadCtrl.create({
+			content: message,
+		});
+
+		this.loader.onDidDismiss(() => {
+			this.loader = null;
+		});
+
+		this.loader.present();
+	}
+
+	setIdle() {
+		if(!this.loader) return;
+		this.loader.dismiss();
+	}
+
+	loadChildData() {
+		this.isLoaded = false;
+		this.setLoading("Carregando dados...");
+
 		this.children
 			.getAlert(this.child.id)
-			.subscribe(
-				(alert) => { this.alert = alert}
-			);
+			.subscribe((alert) => {
+				this.isLoaded = true;
+				this.alert = alert;
+				this.setIdle();
+			});
 
 		this.staticData.get('AlertCause').subscribe((causes) => {
 			this.causes = causes;
 		});
+	}
+
+	canEditPesquisa() {
+		if(!this.alert) {
+			return false;
+		}
+		return (this.alert.case.current_step_type === 'BuscaAtivaEscolar\\CaseSteps\\Pesquisa');
 	}
 
 	renderLabel(field: string) : string {

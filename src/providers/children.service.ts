@@ -9,10 +9,13 @@ export class ChildrenService {
 
 	constructor(public http: AuthHttp, public api: APIService) {}
 
-	getUserAttributions(userID: string) : Observable<Child[]> {
+	getUserAttributions(userID: string, callback:Function = null) : Observable<Child[]> {
 		return this.api
 				.post('children/search', {assigned_user_id: userID, current_step_type: 'BuscaAtivaEscolar\\CaseSteps\\Pesquisa'})
-				.map((data) => { return data.results; })
+				.map((data) => {
+					if(callback) callback(data.results);
+					return data.results;
+				})
 	}
 
 	getAlert(childID: string) : Observable<any> {
@@ -24,7 +27,7 @@ export class ChildrenService {
 		return this.api.get('steps/' + stepType + '/' + stepID + '?with=fields');
 	}
 
-	updateStepFields(step: any) : any {
+	updateStepFields(step: any, callback: Function = null) : any {
 		let fields = {};
 		let stepType = step.step_type.replace(/\\/g, encodeURIComponent('\\'));;
 
@@ -36,7 +39,30 @@ export class ChildrenService {
 
 		console.log("[children.update_step_fields] ", step.id, " fields=", fields);
 
-		return this.api.post('steps/' + stepType + '/' + step.id, fields).subscribe(() => {});
+		return this.api.post('steps/' + stepType + '/' + step.id, fields).subscribe((response) => {
+			if(!callback) return;
+			callback(response);
+		});
+	}
+
+	completeStep(step:any, callback:Function = null) : any {
+		let stepType = step.step_type.replace(/\\/g, encodeURIComponent('\\'));;
+
+		console.log("[children.complete_Step] ", step.id);
+
+		return this.api.post('steps/' + stepType + '/' + step.id + '/complete', {}).subscribe((response) => {
+			if(!callback) return;
+			callback(response);
+		});
+	}
+
+	spawnAlert(data: any, callback: Function = null): any {
+		console.log("[children.spawnAlert] ", data);
+
+		return this.api.post('children', data).subscribe((response) => {
+			if(!callback) return;
+			callback(response);
+		});
 	}
 
 	renderGender(child: Child) : string {

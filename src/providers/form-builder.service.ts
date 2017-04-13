@@ -97,6 +97,26 @@ export class Form {
 		return (data[field.name].indexOf(option[field.options.key]) !== -1);
 	}
 
+	rebuild(tree: any, data: any) {
+		for(let index in tree) {
+			if(!tree.hasOwnProperty(index)) continue;
+
+			let group = tree[index];
+			let fields = group.fields;
+
+			for(let field in fields) {
+				if(!fields.hasOwnProperty(field)) continue;
+				let f = fields[field];
+
+				if(f.type === 'model_field') {
+					if(!data[f.options.key]) continue;
+					data[field] = data[f.options.key][f.options.field]
+				}
+			}
+
+		}
+	}
+
 	handleModelClick(field:any, data:any) {
 
 		let modal = this.modals.create(EntityPickerModal, {

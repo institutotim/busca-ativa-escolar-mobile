@@ -150,7 +150,7 @@ export class AuthService {
 		throw (response.json()) ? response.json(): response;
 	}
 
-	getUser() : Object {
+	getUser() : any {
 		if(!this.isLoggedIn()) return {};
 		return this.user;
 	}

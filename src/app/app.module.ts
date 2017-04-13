@@ -16,16 +16,20 @@ import {StaticDataService} from "../providers/static-data.service";
 import {EditStepPage} from "../pages/edit-step/edit-step";
 import {FormBuilderService} from "../providers/form-builder.service";
 import {EntityPickerModal} from "../pages/modals/entity-picker/entity-picker";
+import {SpawnAlertPage} from "../pages/spawn-alert/spawn-alert";
+import {FormEditor} from "../components/form-editor/form-editor";
 
 @NgModule({
 	declarations: [
 		MyApp,
 		LoginPage,
+		SpawnAlertPage,
 		MyAttributionsPage,
 		ChildViewPage,
 		EditStepPage,
 		TabsPage,
 		EntityPickerModal,
+		FormEditor,
 	],
 	imports: [
 		IonicModule.forRoot(MyApp),
@@ -37,11 +41,13 @@ import {EntityPickerModal} from "../pages/modals/entity-picker/entity-picker";
 	entryComponents: [
 		MyApp,
 		LoginPage,
+		SpawnAlertPage,
 		MyAttributionsPage,
 		ChildViewPage,
 		EditStepPage,
 		TabsPage,
 		EntityPickerModal,
+		FormEditor,
 	],
 	providers: [
 		{provide: ErrorHandler, useClass: IonicErrorHandler},

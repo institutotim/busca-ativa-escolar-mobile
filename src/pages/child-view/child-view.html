@@ -11,6 +11,22 @@
 				<p>{{children.renderAge(child)}}, {{children.renderGender(child)}}</p>
 			</ion-card-header>
 		</ion-card>
+
+		<ion-list>
+			<button ion-item clear color="primary" icon-left (click)="navigateToAddress()">
+				<ion-icon name="navigate" item-left></ion-icon>
+				Direções até o endereço
+			</button>
+			<button *ngIf="isLoaded && canEditPesquisa()" ion-item clear color="primary" icon-left (click)="editCurrentStep()">
+				<ion-icon name="create" item-left></ion-icon>
+				Editar dados de Pesquisa
+			</button>
+			<ion-item *ngIf="isLoaded && !canEditPesquisa()" color="secondary" icon-left clear>
+				<ion-icon name="checkmark-circle" item-left></ion-icon>
+				Pesquisa concluída!
+			</ion-item>
+		</ion-list>
+
 		<ion-list>
 
 			<ion-list-header>Dados da criança ou adolescente</ion-list-header>
@@ -106,16 +122,5 @@
 				<ion-label stacked>{{renderLabel('place_mobile')}}</ion-label>
 				<ion-input type="text" readonly [value]="alert.fields.place_mobile"></ion-input>
 			</ion-item>
-		</ion-list>
-
-		<ion-list>
-			<button ion-item clear color="primary" icon-left (click)="navigateToAddress()">
-				<ion-icon name="navigate"></ion-icon>
-				Direções até o endereço
-			</button>
-			<button ion-item clear color="primary" icon-left (click)="editCurrentStep()">
-				<ion-icon name="create"></ion-icon>
-				Editar dados de Pesquisa
-			</button>
 		</ion-list>
 </ion-content>
