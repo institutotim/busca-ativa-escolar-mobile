@@ -1,4 +1,5 @@
 import {NgModule, ErrorHandler} from '@angular/core';
+import {CloudSettings, CloudModule} from '@ionic/cloud-angular';
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
 import {MyApp} from './app.component';
 import {TabsPage} from '../pages/tabs/tabs';
@@ -19,6 +20,12 @@ import {EntityPickerModal} from "../pages/modals/entity-picker/entity-picker";
 import {SpawnAlertPage} from "../pages/spawn-alert/spawn-alert";
 import {FormEditor} from "../components/form-editor/form-editor";
 
+const cloudSettings: CloudSettings = {
+	'core': {
+		'app_id': '4fc2ed21'
+	}
+};
+
 @NgModule({
 	declarations: [
 		MyApp,
@@ -33,6 +40,7 @@ import {FormEditor} from "../components/form-editor/form-editor";
 	],
 	imports: [
 		IonicModule.forRoot(MyApp),
+		//CloudModule.forRoot(cloudSettings),
 		HttpModule,
 		AuthModule,
 		IonicStorageModule.forRoot()

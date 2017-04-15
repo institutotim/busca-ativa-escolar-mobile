@@ -1,9 +1,10 @@
-<ion-content padding>
-	<div style="height: 25px"></div>
-	<img src="/assets/images/logo_bae_signup.png" />
-	<div style="height: 25px"></div>
+<ion-content>
 
-	<form (ngSubmit)="login(email.value, password.value)">
+	<form (ngSubmit)="login(email.value, password.value)" padding>
+
+		<div style="height: 25px"></div>
+		<img src="/assets/images/logo_bae_signup.png" />
+		<div style="height: 25px"></div>
 
 		<ion-card>
 			<ion-card-header color="primary" block>
@@ -24,11 +25,17 @@
 			</ion-list>
 		</ion-card>
 
-		<ion-card>
-			<ion-card-content>
-				{{api.getURI()}}
-			</ion-card-content>
-		</ion-card>
-
 	</form>
+
+	<ion-list>
+		<ion-item>
+			<h3>Versão 0.1.3</h3>
+			<small>Build 170415-1700</small>
+		</ion-item>
+		<ion-item>
+			<h3>API Endpoint:</h3>
+			<small>{{api.getURI()}}</small>
+		</ion-item>
+	</ion-list>
+
 </ion-content>

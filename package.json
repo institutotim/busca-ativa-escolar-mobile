@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "1.1.4",
+    "@ionic/cloud-angular": "^0.12.0",
     "typescript": "2.0.9"
   },
   "cordovaPlugins": [
