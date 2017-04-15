@@ -45,11 +45,16 @@
     "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [
-    "ios",
+    "ios", "android",
     {
       "platform": "ios",
       "version": "",
       "locator": "ios"
+    },
+    {
+	  "platform": "android",
+	  "version": "",
+	  "locator": "android"
     }
   ],
   "description": "busca-ativa-escolar-mobile: An Ionic project"

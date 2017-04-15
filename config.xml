@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="br.com.lqdi.busca-ativa-escolar-mobile" version="0.1.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="br.com.lqdi.busca-ativa-escolar-mobile" version="0.1.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Busca Ativa Escolar</name>
   <description>Aplicativo da plataform Busca Ativa Escolar para agentes comunitários e técnicos verificadores.</description>
   <author email="contato@lqdi.net" href="http://lqdi.net/">LQDI</author>
