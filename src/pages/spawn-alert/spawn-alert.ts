@@ -106,12 +106,12 @@ export class SpawnAlertPage implements OnInit {
 
 	save() {
 
-		this.form.rebuild(this.formTree, this.fields);
+		let data = this.form.rebuild(this.formTree, this.fields);
 
 		this.isError = false;
 		this.setLoading("Enviando alerta...");
 
-		this.children.spawnAlert(this.fields, (response) => {
+		this.children.spawnAlert(data, (response) => {
 
 			console.log("[spawn_alert] save => ", response);
 

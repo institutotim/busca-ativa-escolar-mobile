@@ -6,6 +6,7 @@ import {AuthHttp} from "angular2-jwt";
 import {UtilsService} from "./utils.service";
 import {ModalController} from "ionic-angular";
 import {EntityPickerModal} from "../pages/modals/entity-picker/entity-picker";
+import {MasksService} from "./masks.service";
 
 @Injectable()
 export class FormBuilderService {
@@ -16,6 +17,7 @@ export class FormBuilderService {
 		public http: AuthHttp,
 		public api: APIService,
 		public utils: UtilsService,
+		public masks: MasksService,
 		public modals: ModalController,
 	) {}
 
@@ -23,7 +25,7 @@ export class FormBuilderService {
 		return this.api
 			.get('integration/forms/' + form)
 			.map((data) => {
-				this.forms[form] = new Form(form, data.form, this.utils, this.modals, this.api);
+				this.forms[form] = new Form(form, data.form, this.utils, this.masks, this.modals, this.api);
 				return this.forms[form];
 			})
 	}
@@ -43,11 +45,12 @@ export class Form {
 		public formName: string,
 		public form : Object,
 		public utils: UtilsService,
+		public masks: MasksService,
 		public modals: ModalController,
 	    public api: APIService,
 	) {}
 
-	shouldDisplay(group: string, field: string, data: Object) : boolean {
+	shouldDisplay(group: string, field: string, data: any) : boolean {
 		let f = this.form[group]['fields'][field];
 
 		if(this.hiddenFieldTypes.indexOf(field) !== -1) return false;
@@ -57,6 +60,20 @@ export class Form {
 		if(f.options.show_if_equal) return (data[f.options.show_if_equal[0]] == f.options.show_if_equal[1]);
 		if(f.options.show_if_in) return (f.options.show_if_in[1]).indexOf(data[f.options.show_if_in[0]]) !== -1;
 		if(f.options.show_if_not_in) return (f.options.show_if_not_in[1]).indexOf(data[f.options.show_if_not_in[0]]) === -1;
+		if(f.options.show_if_multiple_in) {
+			let field = f.options.show_if_multiple_in[0];
+			let accepted = f.options.show_if_multiple_in[1];
+
+			if(!accepted || accepted.length <= 0) return false;
+			if(!data[field] || data[field].length <= 0) return false;
+
+			for(let i in accepted) {
+				if(!accepted.hasOwnProperty(i)) continue;
+				if(data[field].indexOf(accepted[i]) !== -1) return true;
+			}
+
+			return false;
+		}
 		if(f.options.show_if_same) return data[f.options.show_if_same[0]] == data[f.options.show_if_same[1]];
 		
 		return true;
@@ -98,6 +115,9 @@ export class Form {
 	}
 
 	rebuild(tree: any, data: any) {
+
+		let output = {};
+
 		for(let index in tree) {
 			if(!tree.hasOwnProperty(index)) continue;
 
@@ -108,13 +128,23 @@ export class Form {
 				if(!fields.hasOwnProperty(field)) continue;
 				let f = fields[field];
 
+				if(f.options && f.options.transform === "strip_punctuation") {
+					output[field] = this.utils.stripPunctuation(data[field]);
+					continue;
+				}
+
 				if(f.type === 'model_field') {
 					if(!data[f.options.key]) continue;
-					data[field] = data[f.options.key][f.options.field]
+					output[field] = data[f.options.key][f.options.field];
+					continue;
 				}
+
+				output[field] = data[field];
 			}
 
 		}
+
+		return output;
 	}
 
 	handleModelClick(field:any, data:any) {
@@ -167,6 +197,19 @@ export class Form {
 		}
 
 		data[field.name].push(value); // Add to list
+
+	}
+
+	getMask(field: any) : any {
+		if(!field.options.mask) return this.masks.None;
+
+		switch(field.options.mask) {
+			case "cep": return this.masks.CEP;
+			case "cpf": return this.masks.CPF;
+			case "phone": return this.masks.BRPhone;
+		}
+
+		return this.masks.None;
 
 	}
 

@@ -19,6 +19,8 @@ import {FormBuilderService} from "../providers/form-builder.service";
 import {EntityPickerModal} from "../pages/modals/entity-picker/entity-picker";
 import {SpawnAlertPage} from "../pages/spawn-alert/spawn-alert";
 import {FormEditor} from "../components/form-editor/form-editor";
+import {TextMaskModule} from "angular2-text-mask";
+import {MasksService} from "../providers/masks.service";
 
 const cloudSettings: CloudSettings = {
 	'core': {
@@ -43,6 +45,7 @@ const cloudSettings: CloudSettings = {
 		//CloudModule.forRoot(cloudSettings),
 		HttpModule,
 		AuthModule,
+		TextMaskModule,
 		IonicStorageModule.forRoot()
 	],
 	bootstrap: [IonicApp],
@@ -64,6 +67,7 @@ const cloudSettings: CloudSettings = {
 		{provide: ChildrenService, useClass: ChildrenService},
 		{provide: StaticDataService, useClass: StaticDataService},
 		{provide: UtilsService, useClass: UtilsService},
+		{provide: MasksService, useClass: MasksService},
 		{provide: FormBuilderService, useClass: FormBuilderService},
 	]
 })

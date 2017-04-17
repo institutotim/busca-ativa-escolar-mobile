@@ -20,4 +20,9 @@ export class UtilsService {
 		return arr;
 	}
 
+	stripPunctuation = (input) => {
+		if(!input) return '';
+		return input.replace(/[^\w\s]/g, "").replace(/[_]/g, "").replace(/\s+/g, "");
+	}
+
 }
