@@ -6,6 +6,11 @@
 
 <ion-content>
 
+	<button *ngIf="isError" icon-left (click)="loadForm()">
+		<ion-icon name="refresh"></ion-icon>
+		Tentar novamente
+	</button>
+
 	<form-editor *ngIf="form" [formTree]="formTree" [form]="form" [fields]="fields"></form-editor>
 
 	<ion-list>

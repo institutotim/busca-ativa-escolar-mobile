@@ -22,7 +22,7 @@ ionic build android --device --release
 
 echo "[ LQDI-BUILDBOT ] Signing APK for ANDROID...";
 cp ./platforms/android/build/outputs/apk/android-release-unsigned.apk ./release/android-release-pending.apk
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -tsa http://tsa.safecreative.org -keystore ~/Dropbox/SSH/google_play_keystore.jks ./release/android-release-pending.apk busca-ativa-escolar_2017
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -tsa https://freetsa.org/tsr -keystore ~/Dropbox/SSH/google_play_keystore.jks ./release/android-release-pending.apk busca-ativa-escolar_2017
 zipalign -v 4 ./release/android-release-pending.apk ./release/android-release-ready.apk
 
 echo "[ LQDI-BUILDBOT ] De-scaffolding environment...";

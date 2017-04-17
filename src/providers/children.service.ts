@@ -19,7 +19,7 @@ export class ChildrenService {
 	}
 
 	getAlert(childID: string) : Observable<any> {
-		return this.api.get('children/' + childID + '/alert')
+		return this.api.get('children/' + childID + '/alert');
 	}
 
 	getStepData(stepType: string, stepID: string) : Observable<any> {
@@ -27,7 +27,7 @@ export class ChildrenService {
 		return this.api.get('steps/' + stepType + '/' + stepID + '?with=fields');
 	}
 
-	updateStepFields(step: any, callback: Function = null) : any {
+	updateStepFields(step: any, callback: Function = null, onError: Function = null) : any {
 		let fields = {};
 		let stepType = step.step_type.replace(/\\/g, encodeURIComponent('\\'));;
 
@@ -39,30 +39,48 @@ export class ChildrenService {
 
 		console.log("[children.update_step_fields] ", step.id, " fields=", fields);
 
-		return this.api.post('steps/' + stepType + '/' + step.id, fields).subscribe((response) => {
-			if(!callback) return;
-			callback(response);
-		});
+		return this.api.post('steps/' + stepType + '/' + step.id, fields).subscribe(
+			(response) => {
+				if(!callback) return;
+				callback(response);
+			},
+			(error:any) => {
+				if(!onError) return;
+				onError(error);
+			}
+		);
 	}
 
-	completeStep(step:any, callback:Function = null) : any {
+	completeStep(step:any, callback:Function = null, onError:Function = null) : any {
 		let stepType = step.step_type.replace(/\\/g, encodeURIComponent('\\'));;
 
 		console.log("[children.complete_Step] ", step.id);
 
-		return this.api.post('steps/' + stepType + '/' + step.id + '/complete', {}).subscribe((response) => {
-			if(!callback) return;
-			callback(response);
-		});
+		return this.api.post('steps/' + stepType + '/' + step.id + '/complete', {}).subscribe(
+			(response) => {
+				if(!callback) return;
+				callback(response);
+			},
+			(error:any) => {
+				if(!onError) return;
+				onError(error);
+			}
+		);
 	}
 
-	spawnAlert(data: any, callback: Function = null): any {
+	spawnAlert(data: any, callback: Function = null, onError:Function = null): any {
 		console.log("[children.spawnAlert] ", data);
 
-		return this.api.post('children', data).subscribe((response) => {
-			if(!callback) return;
-			callback(response);
-		});
+		return this.api.post('children', data).subscribe(
+			(response) => {
+				if(!callback) return;
+				callback(response);
+			},
+			(error:any) => {
+				if(!onError) return;
+				onError(error);
+			}
+		);
 	}
 
 	renderGender(child: Child) : string {

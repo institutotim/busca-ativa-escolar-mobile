@@ -18,6 +18,7 @@ export class SpawnAlertPage implements OnInit {
 
 	loader: any;
 	isLoaded = false;
+	isError = false;
 
 	step: any;
 	form: Form;
@@ -40,20 +41,29 @@ export class SpawnAlertPage implements OnInit {
 
 	ngOnInit() {
 
+		this.loadForm();
+
+	}
+
+	loadForm() {
+		this.isError = false;
 		this.setLoading("Carregando dados...");
 
 		this.formBuilder.getForm('alerta')
 			.subscribe((form) => {
 
-				this.form = form;
-				this.formTree = form.getTree();
+					this.form = form;
+					this.formTree = form.getTree();
 
-				console.log("Form loaded: ", form);
+					console.log("Form loaded: ", form);
 
-				this.setIdle();
+					this.setIdle();
 
-			})
-
+				},
+				(error) => {
+					this.handleError(error);
+				}
+			)
 	}
 
 	handleValidationErrors(response) {
@@ -98,6 +108,7 @@ export class SpawnAlertPage implements OnInit {
 
 		this.form.rebuild(this.formTree, this.fields);
 
+		this.isError = false;
 		this.setLoading("Enviando alerta...");
 
 		this.children.spawnAlert(this.fields, (response) => {
@@ -120,7 +131,23 @@ export class SpawnAlertPage implements OnInit {
 
 			this.fields = {};
 
-		})
+		}, this.handleError)
+	}
+
+	handleError(error) {
+
+		console.error("[spawn_alert] error: ", error);
+
+		this.setIdle();
+		this.isError = true;
+
+		this.toastCtrl.create({
+			cssClass: 'toast-error',
+			message: 'Ocorreu um erro ao carregar o formulário de alerta. Verifique sua conexão com a internet e tente novamente. (err=' + error + ')',
+			duration: 6000,
+			showCloseButton: true,
+			closeButtonText: 'OK'
+		}).present().catch(() => {});
 	}
 
 	setLoading(message) {
