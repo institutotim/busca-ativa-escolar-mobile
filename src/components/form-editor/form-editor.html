@@ -6,19 +6,19 @@
 		<div *ngFor="let field of form.getGroupFields(group)" [hidden]="!form.shouldDisplay(group.name, field.name, fields)">
 			<ion-item *ngIf="field.type === 'string'">
 				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				<ion-input type="text" [textMask]="form.getMask(field)" [(ngModel)]="fields[field.name]"></ion-input>
+				<ion-input type="text" [textMask]="form.getMask(field)" [(ngModel)]="fields[field.name]" [placeholder]="(field.options && field.options.placeholder) ? field.options.placeholder : ''"></ion-input>
 			</ion-item>
 			<ion-item *ngIf="field.type === 'date'">
 				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				<ion-input type="date" [(ngModel)]="fields[field.name]"></ion-input>
+				<ion-input type="date" [(ngModel)]="fields[field.name]" [placeholder]="(field.options && field.options.placeholder) ? field.options.placeholder : ''"></ion-input>
 			</ion-item>
 			<ion-item *ngIf="field.type === 'number'">
 				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				<ion-input type="number" [(ngModel)]="fields[field.name]"></ion-input>
+				<ion-input type="number" [(ngModel)]="fields[field.name]" [placeholder]="(field.options && field.options.placeholder) ? field.options.placeholder : ''"></ion-input>
 			</ion-item>
 			<ion-item *ngIf="field.type === 'alphanum'">
 				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				<ion-input type="tel" [textMask]="form.getMask(field)" [(ngModel)]="fields[field.name]"></ion-input>
+				<ion-input type="tel" [textMask]="form.getMask(field)" [(ngModel)]="fields[field.name]" [placeholder]="(field.options && field.options.placeholder) ? field.options.placeholder : ''"></ion-input>
 			</ion-item>
 			<ion-item *ngIf="field.type === 'boolean'">
 				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
@@ -26,8 +26,8 @@
 			</ion-item>
 			<ion-item *ngIf="field.type === 'select'">
 				<ion-label stacked>{{form.getFieldLabel(group.name, field.name)}}</ion-label>
-				<ion-select [(ngModel)]="fields[field.name]">
-					<ion-option *ngFor="let option of form.getFieldOptions(field)" value="{{option[field.options.key]}}">{{option[field.options.label]}}</ion-option>
+				<ion-select [(ngModel)]="fields[field.name]" okText="OK" cancelText="Cancelar">
+					<ion-option style="font-size: 12px;" *ngFor="let option of form.getFieldOptions(field)" value="{{option[field.options.key]}}">{{option[field.options.label]}}</ion-option>
 				</ion-select>
 			</ion-item>
 			<div *ngIf="field.type === 'multiple'">

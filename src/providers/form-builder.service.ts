@@ -106,6 +106,14 @@ export class Form {
 		return this.form[group]['fields'][field]['label'] || field;
 	}
 
+	getFieldPlaceholder(group: string, field: string) : any {
+		if(!this.form[group]) return '';
+		if(!this.form[group]['fields'][field]) return '';
+		if(!this.form[group]['fields'][field]['options']) return '';
+
+		return this.form[group]['fields'][field]['options']['placeholder'];
+	}
+
 	isMultipleChecked(field: any, option: any, data: any) : boolean {
 		if(!data) return false;
 		if(!data[field.name]) return false;

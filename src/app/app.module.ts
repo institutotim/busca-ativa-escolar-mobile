@@ -21,6 +21,7 @@ import {SpawnAlertPage} from "../pages/spawn-alert/spawn-alert";
 import {FormEditor} from "../components/form-editor/form-editor";
 import {TextMaskModule} from "angular2-text-mask";
 import {MasksService} from "../providers/masks.service";
+import {DashboardPage} from "../pages/dashboard/dashboard";
 
 const cloudSettings: CloudSettings = {
 	'core': {
@@ -32,6 +33,7 @@ const cloudSettings: CloudSettings = {
 	declarations: [
 		MyApp,
 		LoginPage,
+		DashboardPage,
 		SpawnAlertPage,
 		MyAttributionsPage,
 		ChildViewPage,
@@ -52,6 +54,7 @@ const cloudSettings: CloudSettings = {
 	entryComponents: [
 		MyApp,
 		LoginPage,
+		DashboardPage,
 		SpawnAlertPage,
 		MyAttributionsPage,
 		ChildViewPage,

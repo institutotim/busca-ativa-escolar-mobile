@@ -1,0 +1,30 @@
+<ion-content padding>
+
+	<div style="padding: 15px">
+		<img src="assets/images/logo_bae_signup.png" />
+	</div>
+
+	<ion-card>
+		<ion-card-header style="background: #00a7e9; color: white">
+			Olá, {{user.name}}!
+		</ion-card-header>
+
+		<ion-list>
+			<button ion-item *ngIf="!isAgenteComunitario()" (click)="openMyAttributions()">
+				<ion-icon name="checkbox" item-left></ion-icon>
+				Minhas atribuições
+			</button>
+
+			<button ion-item (click)="openSpawnAlert()">
+				<ion-icon name="add-circle" item-left></ion-icon>
+				Novo alerta
+			</button>
+
+			<button ion-item (click)="logout()">
+				<ion-icon name="exit" item-left></ion-icon>
+				Sair
+			</button>
+
+		</ion-list>
+	</ion-card>
+</ion-content>

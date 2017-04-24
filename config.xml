@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget
 		id="br.com.lqdi.busca-ativa-escolar-mobile"
-		version="0.1.9"
+		version="0.2.1"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:cdv="http://cordova.apache.org/ns/1.0">
+
+	<!-- id="br.org.undime.busca-ativa-escolar-mobile" -->
 
 	<name>Busca Ativa Escolar</name>
 
@@ -23,6 +25,7 @@
 	<allow-intent href="sms:*"/>
 	<allow-intent href="mailto:*"/>
 	<allow-intent href="geo:*"/>
+	<allow-intent href="maps:*"/>
 
 	<platform name="android">
 		<allow-intent href="market:*"/>

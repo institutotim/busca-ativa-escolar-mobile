@@ -6,6 +6,7 @@ import {Storage} from "@ionic/storage";
 import {AuthHttp} from "angular2-jwt";
 import {TabsPage} from "../tabs/tabs";
 import {APIService} from "../../providers/api.service";
+import {DashboardPage} from "../dashboard/dashboard";
 
 @Component({
 	selector: 'page-login',
@@ -52,7 +53,7 @@ export class LoginPage implements OnInit {
 	onLogin(data: any) {
 		this.setIdle();
 		console.log("Logged in: ", data);
-		this.navCtrl.setRoot(TabsPage);
+		this.navCtrl.setRoot(DashboardPage);
 	}
 
 	onError(data: any) {

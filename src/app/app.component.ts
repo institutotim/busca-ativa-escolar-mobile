@@ -6,6 +6,7 @@ import {TabsPage} from '../pages/tabs/tabs';
 import {LoginPage} from "../pages/login/login";
 import {AuthService} from "../providers/auth.service";
 import {APIService} from "../providers/api.service";
+import {DashboardPage} from "../pages/dashboard/dashboard";
 
 
 @Component({
@@ -27,7 +28,7 @@ export class MyApp {
 			auth.loadSessionFromStorage().then((session) => {
 				if(auth.isLoggedIn()) {
 					console.log("Already logged in! ", auth.getUser());
-					return this.rootPage = TabsPage;
+					return this.rootPage = DashboardPage;
 				}
 
 				return this.rootPage = LoginPage;
