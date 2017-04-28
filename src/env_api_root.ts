@@ -1,2 +1,2 @@
-const API_ROOT = 'http://api.busca-ativa-escolar.local/';
+const API_ROOT = 'https://api.buscaativaescolar.org.br/';
 export default API_ROOT;
