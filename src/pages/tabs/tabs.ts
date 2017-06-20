@@ -6,6 +6,9 @@ import {LoginPage} from "../login/login";
 import {MyAttributionsPage} from "../my-attributions/my-attributions";
 import {APIService} from "../../providers/api.service";
 import {SpawnAlertPage} from "../spawn-alert/spawn-alert";
+import {ConnectivityService} from "../../providers/connectivity.service";
+import {SyncPage} from "../sync/sync";
+import {AppSettingsService} from "../../providers/settings.service";
 
 @Component({
 	templateUrl: 'tabs.html'
@@ -14,12 +17,15 @@ export class TabsPage implements OnInit {
 
 	static TAB_SPAWN_ALERT = 0;
 	static TAB_MY_ATTRIBUTIONS = 1;
+	static TAB_SYNC = 2;
 
 	// this tells the tabs component which Pages
 	// should be each tab's root Page
 	tab1Root: any = SpawnAlertPage;
 	tab2Root: any = MyAttributionsPage;
-	tab3Root: any;
+	tab3Root: any = SyncPage;
+
+	_isOnline = true;
 
 	@ViewChild("tabs") tabs: Tabs;
 
@@ -28,11 +34,22 @@ export class TabsPage implements OnInit {
 		public navParams: NavParams,
         public auth: AuthService,
         public api: APIService,
+        public connectivity: ConnectivityService,
+        public settings: AppSettingsService,
 	) {
 		api.setNavController(navCtrl);
 	}
 
 	ngOnInit() {
+
+	}
+
+	isOnline() {
+		return this.connectivity.isOnline();
+	}
+
+	isProduction() {
+		return this.settings.isProductionEndpoint();
 	}
 
 	ionViewDidEnter() {

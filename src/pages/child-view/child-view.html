@@ -17,7 +17,7 @@
 				<ion-icon name="navigate" item-left></ion-icon>
 				Direções até o endereço
 			</button>
-			<button *ngIf="isLoaded && canEditPesquisa()" ion-item clear color="primary" icon-left (click)="editCurrentStep()">
+			<button *ngIf="isLoaded && canEditPesquisa()" [disabled]="!connectivity.isOnline()" ion-item clear color="primary" icon-left (click)="editCurrentStep()">
 				<ion-icon name="create" item-left></ion-icon>
 				Editar dados de Pesquisa
 			</button>

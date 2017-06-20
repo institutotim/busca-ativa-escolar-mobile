@@ -3,6 +3,7 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Storage} from "@ionic/storage";
 import API_ROOT from "../env_api_root";
+import {AppSettingsService} from "./settings.service";
 
 @Injectable()
 export class AuthService {
@@ -16,12 +17,17 @@ export class AuthService {
 		refresh: number
 	};
 
-	tokenURI : string = API_ROOT + 'api/auth/token';
 
 	constructor(
 		public http: Http,
-		protected storage: Storage
+		protected storage: Storage,
+		public settings: AppSettingsService,
 	) {}
+
+	getTokenURI() {
+		console.log("[auth] Resolve API root: ", this.settings.APIRoot);
+		return this.settings.APIRoot + 'api/auth/token';
+	}
 
 	provideToken() : Promise<string> {
 		// Isn't even logged in
@@ -59,7 +65,7 @@ export class AuthService {
 		};
 
 		return this.http
-			.post(this.tokenURI, tokenRequest, options)
+			.post(this.getTokenURI(), tokenRequest, options)
 			.toPromise()
 			.then(this.handleAuthResponse.bind(this), this.handleAuthError.bind(this));
 	}
@@ -77,7 +83,7 @@ export class AuthService {
 		};
 
 		return this.http
-			.post(this.tokenURI, tokenRequest, options)
+			.post(this.getTokenURI(), tokenRequest, options)
 			.toPromise()
 			.then(this.handleAuthResponse.bind(this), this.handleAuthError.bind(this));
 	};
@@ -97,7 +103,7 @@ export class AuthService {
 
 		this.token = data.token;
 		this.expiresAt = {
-			token: (new Date()).getTime() + (3600 * 1000),
+			token: (new Date()).getTime() + (24 * 3600 * 1000),
 			refresh: (new Date()).getTime() + (1209600 * 1000)
 		};
 
@@ -128,6 +134,10 @@ export class AuthService {
 				this.userID = session.userID;
 				this.user = session.user;
 
+				if(session.apiRoot) {
+					this.settings.APIRoot = session.apiRoot;
+				}
+
 				return Promise.resolve(session);
 			});
 	}
@@ -138,7 +148,8 @@ export class AuthService {
 			token: this.token,
 			userID: this.userID,
 			user: this.user,
-			expiresAt: this.expiresAt
+			expiresAt: this.expiresAt,
+			apiRoot: this.settings.APIRoot
 		};
 
 		this.storage.set('session', JSON.stringify(session));

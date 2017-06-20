@@ -9,6 +9,8 @@ import {Child} from "../../entities/Child";
 import {StaticDataService} from "../../providers/static-data.service";
 import {EditStepPage} from "../edit-step/edit-step";
 import {Form, FormBuilderService} from "../../providers/form-builder.service";
+import {QueuedUpdatesService} from "../../providers/queued-updates.service";
+import {ConnectivityService} from "../../providers/connectivity.service";
 
 @Component({
 	selector: 'page-spawn-alert',
@@ -35,6 +37,8 @@ export class SpawnAlertPage implements OnInit {
 		public loadCtrl: LoadingController,
 		public auth: AuthService,
 		public staticData: StaticDataService,
+	    public connectivity: ConnectivityService,
+	    public queue: QueuedUpdatesService
 	) {
 
 	}
@@ -107,6 +111,49 @@ export class SpawnAlertPage implements OnInit {
 	save() {
 
 		let data = this.form.rebuild(this.formTree, this.fields);
+		let requiredFields = ['name', 'mother_name', 'place_address', 'place_neighborhood', 'alert_cause_id'];
+
+		if(this.connectivity.isOnline()) {
+			requiredFields.push('place_city_id');
+			requiredFields.push('place_uf');
+		}
+
+		for(let i in requiredFields) {
+			let field = requiredFields[i];
+
+			if(!data[field] || ("" + data[field]).length <= 0) {
+				this.showErrorToast('Por favor, preencha todos os campos marcados como obrigatórios!');
+				return;
+			}
+		}
+
+		if(!this.connectivity.isOnline()) {
+
+			this.isError = false;
+			this.setLoading("Armazenando alerta...");
+
+			data.place_city_id = this.auth.getUser().tenant.city_id;
+			data.place_city_name = this.auth.getUser().tenant.city.name;
+			data.place_uf = this.auth.getUser().tenant.city.uf;
+
+			return this.queue.queueAlert(data).then((res) => {
+				console.log("[spawn_alert] save.offline => ", data, res);
+
+				this.setIdle();
+
+				this.toastCtrl.create({
+					cssClass: 'toast-success',
+					message: 'Alerta armazenado com sucesso!',
+					duration: 6000,
+					showCloseButton: true,
+					closeButtonText: 'OK'
+				}).present().catch(() => {});
+
+				this.fields = {};
+			});
+
+
+		}
 
 		this.isError = false;
 		this.setLoading("Enviando alerta...");

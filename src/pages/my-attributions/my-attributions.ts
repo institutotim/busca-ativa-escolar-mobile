@@ -7,6 +7,8 @@ import {Observable} from "rxjs";
 import {ChildrenService} from "../../providers/children.service";
 import {Child} from "../../entities/Child";
 import {ChildViewPage} from "../child-view/child-view";
+import {LocalDataService} from "../../providers/local-data.service";
+import {ConnectivityService} from "../../providers/connectivity.service";
 
 @Component({
 	selector: 'page-my-attributions',
@@ -14,7 +16,7 @@ import {ChildViewPage} from "../child-view/child-view";
 })
 export class MyAttributionsPage implements OnInit {
 
-	attributions: Observable<Child[]>;
+	attributions = []; //: Observable<Child[]>;
 
 	loader: any;
 
@@ -23,7 +25,9 @@ export class MyAttributionsPage implements OnInit {
 		public events: Events,
 		public auth: AuthService,
 		public loadingCtrl: LoadingController,
-		public children: ChildrenService
+		public children: ChildrenService,
+		public localData: LocalDataService,
+		public connectivity: ConnectivityService,
 	) {}
 
 	ngOnInit() {
@@ -56,15 +60,28 @@ export class MyAttributionsPage implements OnInit {
 		this.loader.dismiss();
 	}
 
+	isAvailable(child: Child) : boolean {
+		if(this.connectivity.isOnline()) return true;
+		return this.localData.isMarkedAsCached("children", child.id);
+	}
+
 	protected refreshAttributions() {
 		this.setLoading("Carregando atribuições...");
 
-		this.attributions = this.children.getUserAttributions(this.auth.getUserID(), (response) => {
+		this.children.getUserAttributions(this.auth.getUserID(), (response) => {
 			this.setIdle();
-		});
+		}).subscribe((attributions) => {
+			this.attributions = attributions;
+		})
 	}
 
 	openChild(child: Child) {
+
+		if(!this.isAvailable(child)) {
+			// TODO: show alert
+			return;
+		}
+
 		this.navCtrl.push(ChildViewPage, {
 			child: child
 		});

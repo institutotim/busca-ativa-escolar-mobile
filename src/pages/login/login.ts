@@ -7,6 +7,7 @@ import {AuthHttp} from "angular2-jwt";
 import {TabsPage} from "../tabs/tabs";
 import {APIService} from "../../providers/api.service";
 import {DashboardPage} from "../dashboard/dashboard";
+import {AppSettingsService} from "../../providers/settings.service";
 
 @Component({
 	selector: 'page-login',
@@ -22,6 +23,7 @@ export class LoginPage implements OnInit {
 		public alertCtrl: AlertController,
 		public auth: AuthService,
 		public api: APIService,
+		public settings: AppSettingsService,
 	) {}
 
 	ngOnInit() {
@@ -58,6 +60,7 @@ export class LoginPage implements OnInit {
 
 	onError(data: any) {
 		this.setIdle();
+		console.error("Error: ", data);
 
 		if(data && data.error === 'invalid_credentials') {
 
@@ -67,9 +70,15 @@ export class LoginPage implements OnInit {
 				buttons: ['OK']
 			}).present();
 
+			return;
 		}
 
-		console.error("Error: ", data);
+		this.alertCtrl.create({
+			title: 'Conexão indisponível!',
+			subTitle: 'Verifique se sua conexão com a internet está habilitada, e tente novamente.',
+			buttons: ['OK']
+		}).present();
+
 	}
 
 }
