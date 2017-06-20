@@ -11,6 +11,7 @@
   For more info on type definition files, check out the Typescript docs here:
   https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html
 */
+import {SQLite} from "ionic-native";
 declare module '*';
 
 // Type definitions for Apache Cordova Network Information plugin.
@@ -63,6 +64,11 @@ interface Connection {
 	type: number
 }
 
+interface Window {
+	sqlitePlugin: SQLite;
+	plugins: any;
+}
+
 declare var Connection: {
 	UNKNOWN: number;
 	ETHERNET: number;
@@ -72,4 +78,4 @@ declare var Connection: {
 	CELL_4G: number;
 	CELL: number;
 	NONE: number;
-}
+};

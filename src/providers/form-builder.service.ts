@@ -9,6 +9,7 @@ import {EntityPickerModal} from "../pages/modals/entity-picker/entity-picker";
 import {MasksService} from "./masks.service";
 import {ConnectivityService} from "./connectivity.service";
 import {LocalDataService} from "./local-data.service";
+import {LocalIndexService} from "./local-index.service";
 
 @Injectable()
 export class FormBuilderService {
@@ -23,6 +24,7 @@ export class FormBuilderService {
 		public modals: ModalController,
 		public connectivity: ConnectivityService,
 		public localData: LocalDataService,
+		public localIndex: LocalIndexService,
 	) {}
 
 	getForm(form: string) : Observable<Form> {
@@ -32,7 +34,7 @@ export class FormBuilderService {
 			if(this.localData.isCached('forms/' + form)) {
 				let data = this.localData.get('forms/' + form);
 
-				this.forms[form] = new Form(form, data.form, this.utils, this.masks, this.modals, this.api, this.connectivity);
+				this.forms[form] = new Form(form, data.form, this.utils, this.masks, this.modals, this.api, this.connectivity, this.localIndex);
 
 				return Observable.of(this.forms[form]);
 			}
@@ -50,7 +52,7 @@ export class FormBuilderService {
 				return data;
 			})
 			.map((data) => {
-				this.forms[form] = new Form(form, data.form, this.utils, this.masks, this.modals, this.api, this.connectivity);
+				this.forms[form] = new Form(form, data.form, this.utils, this.masks, this.modals, this.api, this.connectivity, this.localIndex);
 				return this.forms[form];
 			})
 			.catch((error, caught) => {
@@ -77,6 +79,7 @@ export class Form {
 		public modals: ModalController,
 	    public api: APIService,
 	    public connectivity: ConnectivityService,
+	    public localIndex: LocalIndexService,
 	) {}
 
 	shouldDisplay(group: string, field: string, data: any) : boolean {
@@ -190,8 +193,27 @@ export class Form {
 		let modal = this.modals.create(EntityPickerModal, {
 			title: 'Selecione: ' + field.label,
 			items: (query) => {
+
+				if(!this.connectivity.isOnline()) {
+
+					if(!field.options.is_available_offline) {
+						console.error("[form_builder.offline] Currently offline, but field not available offline: ", field);
+						return Observable.empty();
+					}
+
+					let results = this.localIndex.search(field.options.offline_index, field.options.offline_field, query)
+						.catch((err) => {
+							console.error("[form_builder.offline] Error when searching local index: ", err);
+							return [];
+						});
+
+					return Observable.fromPromise(results);
+
+				}
+
 				let searchParams = {};
 				searchParams[field.options.search_by] = query;
+
 				return this.api
 					.post(field.options.source, searchParams, true)
 					.map((items) => {

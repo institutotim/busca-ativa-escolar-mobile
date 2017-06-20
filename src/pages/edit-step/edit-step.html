@@ -24,7 +24,7 @@
 			<ion-icon name="cloud-upload"></ion-icon>
 			Salvar
 		</button>
-		<button ion-item clear color="success" icon-left (click)="saveAndComplete()">
+		<button ion-item clear color="success" [disabled]="!connectivity.isOnline()" icon-left (click)="saveAndComplete()">
 			<ion-icon name="cloud-upload"></ion-icon>
 			Salvar e concluir Pesquisa
 		</button>

@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Storage} from "@ionic/storage";
-import API_ROOT from "../env_api_root";
 import {AppSettingsService} from "./settings.service";
 
 @Injectable()
