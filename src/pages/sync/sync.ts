@@ -72,6 +72,10 @@ export class SyncPage implements OnInit {
 		this.loader.dismiss();
 	}
 
+	isAgenteComunitario() {
+		return (this.auth.isLoggedIn() && this.auth.getUser().type === 'agente_comunitario');
+	}
+
 	doFullDownload() {
 
 		this.setLoading("Baixando informações...");
@@ -79,10 +83,10 @@ export class SyncPage implements OnInit {
 		let current = 0;
 
 		let downloads = [
-			{name: 'Dados estáticos', closure: async () => this.staticData.refresh().toPromise()},
-			{name: 'Formulário de alerta', closure: async () => this.formBuilder.getForm("alerta").toPromise()},
-			{name: 'Formulário de pesquisa', closure: async () => this.formBuilder.getForm("pesquisa").toPromise()},
-			{name: 'Minhas atribuições', closure: async () => this.children.getUserAttributions(this.auth.userID).toPromise().then((assignments) => {
+			{name: 'Dados estáticos', skipIfAgente: false, closure: async () => this.staticData.refresh().toPromise()},
+			{name: 'Formulário de alerta', skipIfAgente: false, closure: async () => this.formBuilder.getForm("alerta").toPromise()},
+			{name: 'Formulário de pesquisa', skipIfAgente: true, closure: async () => this.formBuilder.getForm("pesquisa").toPromise()},
+			{name: 'Minhas atribuições', skipIfAgente: true, closure: async () => this.children.getUserAttributions(this.auth.userID).toPromise().then((assignments) => {
 
 				console.log("[sync] Downloading children data...");
 
@@ -122,9 +126,14 @@ export class SyncPage implements OnInit {
 
 			current = total - downloads.length;
 
+			if(this.isAgenteComunitario() && task.skipIfAgente) {
+				return true;
+			}
+
 			this.loader.setContent("Baixando (" + current + "/" + total + "): " + task.name);
 			await task.closure();
 			return true;
+			
 		}).then((responses) => {
 			console.log("[sync] Sync completed, responses: ", responses);
 			console.log("[sync] Tasks remaining: ", downloads.length);

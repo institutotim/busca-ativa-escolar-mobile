@@ -16,14 +16,22 @@
 		</ion-list>
 	</ion-card>
 
+	<ion-card>
+		<ion-card-content>
+			<p>Para usar o aplicativo offline (sem conexão com a internet), você deve primeiro baixar os dados para uso offline, usando a opção <strong>Baixar dados para uso offline</strong> no menu abaixo.</p>
+			<p>Quando o aplicativo estiver sem conexão, os alertas e pesquisas salvos serão guardados localmente no seu dispositivo.</p>
+			<p>Quando a conexão estiver disponível novamente, os dados coletados poderão ser publicados na plataforma usando a opção <strong>Publicar dados na plataforma</strong> no menu abaixo.</p>
+		</ion-card-content>
+	</ion-card>
+
 	<ion-list>
 		<button ion-item clear icon-left [disabled]="!connectivity.isOnline()" (click)="doFullUpload()">
 			<ion-icon name="cloud-upload"></ion-icon>
-			Enviar dados ao servidor
+			Publicar dados na plataforma
 		</button>
 		<button ion-item clear icon-left [disabled]="!connectivity.isOnline()" (click)="doFullDownload()">
 			<ion-icon name="cloud-download"></ion-icon>
-			Baixar dados do servidor
+			Baixar dados para uso offline
 		</button>
 		<div ion-item clear>
 			<h3>Último download:</h3>

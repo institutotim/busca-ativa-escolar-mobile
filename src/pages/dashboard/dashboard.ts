@@ -51,7 +51,13 @@ export class DashboardPage implements OnInit {
 
 	openSync() {
 		console.log("[dashboard] Go: SyncPage");
-		this.navCtrl.setRoot(TabsPage, {tab: TabsPage.TAB_SYNC});
+		let offset = 0;
+
+		if(this.isAgenteComunitario()) {
+			offset = -1;
+		}
+
+		this.navCtrl.setRoot(TabsPage, {tab: TabsPage.TAB_SYNC + offset});
 	}
 
 	isAgenteComunitario() {

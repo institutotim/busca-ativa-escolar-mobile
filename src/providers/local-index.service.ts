@@ -13,6 +13,11 @@ export class LocalIndexService {
 	    public sqlite: SQLite
 	) {
 
+		if(!window['plugins'] || !window['plugins'].sqlDB) {
+			console.error("[local_index_service] Failed to load SQLite plugin!");
+			return;
+		}
+
 		window['plugins'].sqlDB.copy('schools.sqlite', 0, () => {
 
 			console.info("[local_index_service] SQLite database copied! Opening...");
