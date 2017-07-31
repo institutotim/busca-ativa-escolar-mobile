@@ -222,6 +222,8 @@ export class Form {
 					})
 			},
 			render: (item) => {
+				console.debug('modal.item.render', item._isOffline, field.options, item);
+				if(item._isOffline) return item[field.options.offline_label];
 				return item[field.options.label];
 			}
 		});

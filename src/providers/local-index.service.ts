@@ -8,6 +8,8 @@ export class LocalIndexService {
 	db:SQLiteObject = null;
 	public isAvailable:Boolean = false;
 
+	databaseFile:string = 'offline_data_b20170713_rev2.sqlite';
+
 	constructor(
 		public connectivity: ConnectivityService,
 	    public sqlite: SQLite
@@ -18,21 +20,21 @@ export class LocalIndexService {
 			return;
 		}
 
-		window['plugins'].sqlDB.copy('schools.sqlite', 0, () => {
+		window['plugins'].sqlDB.copy(this.databaseFile, 0, () => {
 
-			console.info("[local_index_service] SQLite database copied! Opening...");
+			console.info("[local_index_service] SQLite database copied! Opening...", this.databaseFile);
 
 			this.openDatabase();
 
 		}, (error) => {
 
 			if(error.code === 516) {
-				console.info("[local_index_service] SQLite database already copied! Opening...");
+				console.info("[local_index_service] SQLite database already copied! Opening...", this.databaseFile);
 				this.openDatabase();
 				return;
 			}
 
-			console.error("[local_index_service] Failed to copy SQLite database: ", error);
+			console.error("[local_index_service] Failed to copy SQLite database: ", error, this.databaseFile);
 		});
 
 
@@ -40,7 +42,7 @@ export class LocalIndexService {
 	}
 
 	openDatabase() {
-		this.sqlite.create({name: 'schools.sqlite', location: 'default'}).then((db) => {
+		this.sqlite.create({name: this.databaseFile, location: 'default'}).then((db) => {
 
 			console.info("[local_index_service] SQLite database ready: ", db);
 
@@ -61,7 +63,9 @@ export class LocalIndexService {
 				let data = [];
 
 				for(let i = 0; i < results.rows.length; i++) {
-					data.push(results.rows.item(i));
+					let item = results.rows.item(i);
+					item._isOffline = true;
+					data.push(item);
 				}
 
 				console.log("\t[local_index_service] Got results: ", results, data);

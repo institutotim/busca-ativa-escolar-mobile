@@ -11,6 +11,7 @@ import {Observable} from "rxjs";
 import {MyAttributionsPage} from "../my-attributions/my-attributions";
 import {ConnectivityService} from "../../providers/connectivity.service";
 import {QueuedUpdatesService} from "../../providers/queued-updates.service";
+import {LocalDataService} from "../../providers/local-data.service";
 
 @Component({
 	selector: 'page-edit-step',
@@ -36,6 +37,7 @@ export class EditStepPage implements OnInit {
 		public auth: AuthService,
 		public children: ChildrenService,
 	    public utils: UtilsService,
+	    public localData: LocalDataService,
 	    public staticData: StaticDataService,
 	    public formBuilder: FormBuilderService,
 	    public connectivity: ConnectivityService,
@@ -72,6 +74,7 @@ export class EditStepPage implements OnInit {
 				if(++alreadyLoaded === 2) this.setIdle();
 
 			})
+
 	}
 
 	setLoading(message) {
@@ -98,21 +101,33 @@ export class EditStepPage implements OnInit {
 			this.step.shouldComplete = true;
 		}
 
-		return this.queue.queueChildUpdate(this.step.id, this.step).then((res) => {
-			console.log("[edit_step] save.offline => ", this.step, res);
+		return this.queue.queueChildUpdate(this.step.id, this.step)
+			.then((res) => {
+				this.localData.save('steps/' + this.step.type + '/' + this.step.id, this.step);
+			})
+			.then((res) => {
+				console.log("[edit_step] save.offline => ", this.step, res);
 
-			this.setIdle();
+				this.setIdle();
 
-			this.toastCtrl.create({
-				cssClass: 'toast-success',
-				message: 'Dados armazenados com sucesso!',
-				duration: 6000,
-				showCloseButton: true,
-				closeButtonText: 'OK'
-			}).present().catch(() => {});
+				this.toastCtrl.create({
+					cssClass: 'toast-success',
+					message: 'Dados armazenados com sucesso!',
+					duration: 6000,
+					showCloseButton: true,
+					closeButtonText: 'OK'
+				}).present().catch(() => {});
 
-			this.fields = {};
-		});
+			})
+			.catch((error) => {
+				this.setIdle();
+
+				this.toastCtrl.create({
+					cssClass: 'toast-error',
+					message: 'Ocorreu um erro ao salvar os dados!',
+					duration: 3000
+				}).present().catch(() => {});
+			});
 	}
 
 	saveOnline() {
@@ -140,6 +155,14 @@ export class EditStepPage implements OnInit {
 				duration: 3000
 			}).present().catch(() => {});
 
+		}, (error) => {
+			this.setIdle();
+
+			this.toastCtrl.create({
+				cssClass: 'toast-error',
+				message: 'Ocorreu um erro ao salvar os dados!',
+				duration: 3000
+			}).present().catch(() => {});
 		});
 	}
 
@@ -207,6 +230,14 @@ export class EditStepPage implements OnInit {
 
 			this.navCtrl.popTo(MyAttributionsPage);
 
+		}, (error) => {
+			this.setIdle();
+
+			this.toastCtrl.create({
+				cssClass: 'toast-error',
+				message: 'Ocorreu um erro ao concluir a etapa!',
+				duration: 3000
+			}).present().catch(() => {});
 		})
 	}
 
