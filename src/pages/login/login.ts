@@ -2,9 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 
 import {AlertController, LoadingController, NavController} from 'ionic-angular';
 import {AuthService} from "../../providers/auth.service";
-import {Storage} from "@ionic/storage";
-import {AuthHttp} from "angular2-jwt";
-import {TabsPage} from "../tabs/tabs";
 import {APIService} from "../../providers/api.service";
 import {DashboardPage} from "../dashboard/dashboard";
 import {AppSettingsService} from "../../providers/settings.service";

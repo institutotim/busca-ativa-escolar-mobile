@@ -25,7 +25,6 @@
         "@types/cordova-plugin-network-information": "0.0.3",
         "angular2-jwt": "^0.1.28",
         "angular2-text-mask": "^8.0.0",
-        "async-parallel": "^1.0.7",
         "axios": "^0.16.2",
         "cordova-android": "^6.2.3",
         "cordova-plugin-console": "1.0.5",
