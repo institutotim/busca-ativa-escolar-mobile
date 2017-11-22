@@ -20,7 +20,7 @@
 				Novo alerta
 			</button>
 
-			<button ion-item (click)="openSync()">
+			<button ion-item *ngIf="isOnline()" (click)="openSync()">
 				<ion-icon name="cloud-upload" item-left></ion-icon>
 				Sincronizar dados
 			</button>

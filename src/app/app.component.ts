@@ -7,6 +7,7 @@ import {LoginPage} from "../pages/login/login";
 import {AuthService} from "../providers/auth.service";
 import {APIService} from "../providers/api.service";
 import {DashboardPage} from "../pages/dashboard/dashboard";
+import {ConnectivityService} from "../providers/connectivity.service";
 
 
 @Component({
@@ -20,10 +21,15 @@ export class MyApp {
 		platform: Platform,
 		auth: AuthService,
 	    api: APIService,
+	    connectivity: ConnectivityService
 	) {
 		platform.ready().then(() => {
+			console.log("---------- APP START ----------");
+			
 			StatusBar.styleDefault();
 			Splashscreen.hide();
+
+			connectivity.setup();
 
 			auth.loadSessionFromStorage().then((session) => {
 				if(auth.isLoggedIn()) {

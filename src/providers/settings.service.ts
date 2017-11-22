@@ -13,7 +13,7 @@ export class AppSettingsService {
 	public availableAPIRoots = [
 		'http://api.busca-ativa-escolar.local/',
 		'https://api.buscaativaescolar.org.br/',
-		'http://api.buscaativateste.conexaobrasil.org/',
+		'https://api.testes.buscaativaescolar.org.br/',
 	];
 
 	constructor(

@@ -9,6 +9,11 @@ export class ConnectivityService {
 	onlineStatuses = [];
 
 	constructor() {
+
+	}
+
+	setup() {
+
 		if(navigator.connection) {
 			this.onlineStatuses = [
 				Connection.ETHERNET,
@@ -17,8 +22,14 @@ export class ConnectivityService {
 				Connection.CELL_3G,
 				Connection.CELL_4G,
 				Connection.CELL,
+				Connection.UNKNOWN
 			];
 		}
+
+		let status = this.isOnline();
+
+		console.log("[connectivity] Valid online statuses: ", this.onlineStatuses.join(", "));
+		console.log("[connectivity] Initial network status: ", (status ? 'ONLINE' : 'OFFLINE'), (navigator.connection ? navigator.connection.type : 'UNKOWN_DESKTOP'));
 
 		this.timer = setInterval(() => {
 			this.checkConnectionStatus();
