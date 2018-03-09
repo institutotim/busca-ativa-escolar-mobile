@@ -7,6 +7,9 @@ import {MyAttributionsPage} from "../my-attributions/my-attributions";
 import {SpawnAlertPage} from "../spawn-alert/spawn-alert";
 import {LoginPage} from "../login/login";
 import {TabsPage} from "../tabs/tabs";
+import {SyncPage} from "../sync/sync";
+import {ConnectivityService} from "../../providers/connectivity.service";
+import {AppSettingsService} from "../../providers/settings.service";
 
 @Component({
 	selector: 'page-dashboard',
@@ -22,7 +25,9 @@ export class DashboardPage implements OnInit {
 		public events: Events,
 		public auth: AuthService,
 		public loadingCtrl: LoadingController,
-		public children: ChildrenService
+		public children: ChildrenService,
+		public connectivity: ConnectivityService,
+		public settings: AppSettingsService,
 	) {}
 
 	ngOnInit() {
@@ -44,8 +49,27 @@ export class DashboardPage implements OnInit {
 		this.navCtrl.setRoot(TabsPage, {tab: TabsPage.TAB_SPAWN_ALERT});
 	}
 
+	openSync() {
+		console.log("[dashboard] Go: SyncPage");
+		let offset = 0;
+
+		if(this.isAgenteComunitario()) {
+			offset = -1;
+		}
+
+		this.navCtrl.setRoot(TabsPage, {tab: TabsPage.TAB_SYNC + offset});
+	}
+
 	isAgenteComunitario() {
 		return (this.auth.isLoggedIn() && this.auth.getUser().type === 'agente_comunitario');
+	}
+
+	isOnline() {
+		return this.connectivity.isOnline();
+	}
+
+	isProduction() {
+		return this.settings.isProductionEndpoint();
 	}
 
 	logout() {

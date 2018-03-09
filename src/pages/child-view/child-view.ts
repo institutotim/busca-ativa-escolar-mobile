@@ -8,6 +8,7 @@ import {ChildrenService} from "../../providers/children.service";
 import {Child} from "../../entities/Child";
 import {StaticDataService} from "../../providers/static-data.service";
 import {EditStepPage} from "../edit-step/edit-step";
+import {ConnectivityService} from "../../providers/connectivity.service";
 
 @Component({
 	selector: 'page-child-view',
@@ -58,6 +59,7 @@ export class ChildViewPage implements OnInit {
 		public auth: AuthService,
 		public children: ChildrenService,
 		public staticData: StaticDataService,
+		public connectivity: ConnectivityService,
 	) {
 		this.child = navParams.get('child');
 	}
@@ -93,9 +95,15 @@ export class ChildViewPage implements OnInit {
 
 		this.children
 			.getAlert(this.child.id)
+			.catch((error, caught) => {
+				this.setIdle();
+				console.error("[child_view] Caught exception: ", error, caught);
+				return Observable.empty();
+			})
 			.subscribe((alert) => {
 				this.isLoaded = true;
 				this.alert = alert;
+				console.log("[child_view] Loaded alert: ", alert);
 				this.setIdle();
 			});
 
@@ -105,9 +113,10 @@ export class ChildViewPage implements OnInit {
 	}
 
 	canEditPesquisa() {
-		if(!this.alert) {
-			return false;
-		}
+		if(!this.alert) return false;
+		if(!this.alert.case) return false;
+		if(!this.alert.case.current_step_type) return false;
+
 		return (this.alert.case.current_step_type === 'BuscaAtivaEscolar\\CaseSteps\\Pesquisa');
 	}
 

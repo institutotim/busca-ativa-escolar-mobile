@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Minhas atribuições</ion-title>
+    <ion-title>Atribuições</ion-title>
 	  <ion-buttons end>
 		  <button ion-button icon-only (click)="refreshAttributions()">
 			  <ion-icon name="refresh"></ion-icon>
@@ -11,10 +11,10 @@
 
 <ion-content>
   <ion-list>
-	  <button ion-item *ngFor="let child of attributions | async" (click)="openChild(child)" icon-left>
+	  <button ion-item *ngFor="let child of attributions" [disabled]="!isAvailable(child)" (click)="openChild(child)" icon-left>
 		  <ion-icon name="person" item-left></ion-icon>
 		  <h2>{{child.name}}</h2>
-		  <p>{{children.renderAge(child)}}, {{children.renderGender(child)}}</p>
+		  <p><span [hidden]="!child.age">{{children.renderAge(child)}}, </span><span [hidden]="!child.gender">{{children.renderGender(child)}}</span></p>
 	  </button>
   </ion-list>
 </ion-content>

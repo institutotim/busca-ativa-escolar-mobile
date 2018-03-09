@@ -20,6 +20,11 @@
 				Novo alerta
 			</button>
 
+			<button ion-item *ngIf="isOnline()" (click)="openSync()">
+				<ion-icon name="cloud-upload" item-left></ion-icon>
+				Sincronizar dados
+			</button>
+
 			<button ion-item (click)="logout()">
 				<ion-icon name="exit" item-left></ion-icon>
 				Sair
@@ -27,4 +32,9 @@
 
 		</ion-list>
 	</ion-card>
+
+	<div class="dashboard-flags">
+		<div *ngIf="!isOnline()" class="banner banner-offline-mode">Offline - Conexão indisponível</div>
+		<div *ngIf="!isProduction()" class="banner banner-is-test">Ambiente de testes</div>
+	</div>
 </ion-content>

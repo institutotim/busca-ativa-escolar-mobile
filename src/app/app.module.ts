@@ -22,6 +22,13 @@ import {FormEditor} from "../components/form-editor/form-editor";
 import {TextMaskModule} from "angular2-text-mask";
 import {MasksService} from "../providers/masks.service";
 import {DashboardPage} from "../pages/dashboard/dashboard";
+import {QueuedUpdatesService} from "../providers/queued-updates.service";
+import {ConnectivityService} from "../providers/connectivity.service";
+import {LocalDataService} from "../providers/local-data.service";
+import {SyncPage} from "../pages/sync/sync";
+import {AppSettingsService} from "../providers/settings.service";
+import {LocalIndexService} from "../providers/local-index.service";
+import {SQLite} from "@ionic-native/sqlite";
 
 const cloudSettings: CloudSettings = {
 	'core': {
@@ -38,6 +45,7 @@ const cloudSettings: CloudSettings = {
 		MyAttributionsPage,
 		ChildViewPage,
 		EditStepPage,
+		SyncPage,
 		TabsPage,
 		EntityPickerModal,
 		FormEditor,
@@ -59,6 +67,7 @@ const cloudSettings: CloudSettings = {
 		MyAttributionsPage,
 		ChildViewPage,
 		EditStepPage,
+		SyncPage,
 		TabsPage,
 		EntityPickerModal,
 		FormEditor,
@@ -72,6 +81,12 @@ const cloudSettings: CloudSettings = {
 		{provide: UtilsService, useClass: UtilsService},
 		{provide: MasksService, useClass: MasksService},
 		{provide: FormBuilderService, useClass: FormBuilderService},
+		{provide: QueuedUpdatesService, useClass: QueuedUpdatesService},
+		{provide: ConnectivityService, useClass: ConnectivityService},
+		{provide: LocalDataService, useClass: LocalDataService},
+		{provide: AppSettingsService, useClass: AppSettingsService},
+		{provide: LocalIndexService, useClass: LocalIndexService},
+		{provide: SQLite, useClass: SQLite},
 	]
 })
 export class AppModule {

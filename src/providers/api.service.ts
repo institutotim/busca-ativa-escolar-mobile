@@ -1,23 +1,30 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {AuthHttp} from "angular2-jwt";
-import API_ROOT from "../env_api_root";
 import {NavController} from "ionic-angular";
 import {LoginPage} from "../pages/login/login";
+import {LocalDataService} from "./local-data.service";
+import {ConnectivityService} from "./connectivity.service";
+import {AppSettingsService} from "./settings.service";
 
 @Injectable()
 export class APIService {
 
 	public nav: NavController;
 
-	constructor(public http: AuthHttp) {}
+	constructor(
+		public http: AuthHttp,
+	    public localData: LocalDataService,
+	    public connectivity: ConnectivityService,
+	    public settings: AppSettingsService,
+	) {}
 
 	getURI() {
-		return API_ROOT + 'api/v1/';
+		return this.settings.APIRoot + 'api/v1/';
 	}
 
 	getTokenURI() {
-		return API_ROOT + 'api/auth/token';
+		return this.settings.APIRoot + 'api/auth/token';
 	}
 
 	setNavController(nav: NavController) {
@@ -25,6 +32,9 @@ export class APIService {
 	}
 
 	post(path: string, data?: any, isAbsoluteURL: boolean = false) : Observable<any> {
+
+		let requestID = ("POST " + this.getURI() + path + "?" + JSON.stringify(data));
+
 		return this.http
 			.post((!isAbsoluteURL ? this.getURI() : '') + path, data)
 			.map((data) => {
@@ -43,6 +53,9 @@ export class APIService {
 	}
 
 	get(path:string) : Observable<any> {
+
+		let requestID = ("GET " + this.getURI() + path);
+
 		return this.http
 			.get(this.getURI() + path)
 			.map((data) => {

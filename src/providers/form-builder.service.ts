@@ -7,6 +7,9 @@ import {UtilsService} from "./utils.service";
 import {ModalController} from "ionic-angular";
 import {EntityPickerModal} from "../pages/modals/entity-picker/entity-picker";
 import {MasksService} from "./masks.service";
+import {ConnectivityService} from "./connectivity.service";
+import {LocalDataService} from "./local-data.service";
+import {LocalIndexService} from "./local-index.service";
 
 @Injectable()
 export class FormBuilderService {
@@ -19,14 +22,41 @@ export class FormBuilderService {
 		public utils: UtilsService,
 		public masks: MasksService,
 		public modals: ModalController,
+		public connectivity: ConnectivityService,
+		public localData: LocalDataService,
+		public localIndex: LocalIndexService,
 	) {}
 
 	getForm(form: string) : Observable<Form> {
+
+		if(!this.connectivity.isOnline()) {
+
+			if(this.localData.isCached('forms/' + form)) {
+				let data = this.localData.get('forms/' + form);
+
+				this.forms[form] = new Form(form, data.form, this.utils, this.masks, this.modals, this.api, this.connectivity, this.localIndex);
+
+				return Observable.of(this.forms[form]);
+			}
+
+			return Observable.of({});
+
+		}
+
 		return this.api
 			.get('integration/forms/' + form)
 			.map((data) => {
-				this.forms[form] = new Form(form, data.form, this.utils, this.masks, this.modals, this.api);
+				this.localData.save('forms/' + form, data);
+				this.localData.markAsCached('forms', form);
+
+				return data;
+			})
+			.map((data) => {
+				this.forms[form] = new Form(form, data.form, this.utils, this.masks, this.modals, this.api, this.connectivity, this.localIndex);
 				return this.forms[form];
+			})
+			.catch((error, caught) => {
+				return Observable.empty();
 			})
 	}
 
@@ -48,6 +78,8 @@ export class Form {
 		public masks: MasksService,
 		public modals: ModalController,
 	    public api: APIService,
+	    public connectivity: ConnectivityService,
+	    public localIndex: LocalIndexService,
 	) {}
 
 	shouldDisplay(group: string, field: string, data: any) : boolean {
@@ -55,6 +87,7 @@ export class Form {
 
 		if(this.hiddenFieldTypes.indexOf(field) !== -1) return false;
 
+		if(f.options.hide_if_offline) return this.connectivity.isOnline() || (!!data[f.options.hide_if_offline] && !this.connectivity.isOnline()) == true;
 		if(f.options.show_if_true) return (!!data[f.options.show_if_true]) == true;
 		if(f.options.show_if_false) return (!!data[f.options.show_if_false]) == false;
 		if(f.options.show_if_equal) return (data[f.options.show_if_equal[0]] == f.options.show_if_equal[1]);
@@ -122,7 +155,7 @@ export class Form {
 		return (data[field.name].indexOf(option[field.options.key]) !== -1);
 	}
 
-	rebuild(tree: any, data: any) {
+	rebuild(tree: any, data: any): any {
 
 		let output = {};
 
@@ -160,8 +193,27 @@ export class Form {
 		let modal = this.modals.create(EntityPickerModal, {
 			title: 'Selecione: ' + field.label,
 			items: (query) => {
+
+				if(!this.connectivity.isOnline()) {
+
+					if(!field.options.is_available_offline) {
+						console.error("[form_builder.offline] Currently offline, but field not available offline: ", field);
+						return Observable.empty();
+					}
+
+					let results = this.localIndex.search(field.options.offline_index, field.options.offline_field, query)
+						.catch((err) => {
+							console.error("[form_builder.offline] Error when searching local index: ", err);
+							return [];
+						});
+
+					return Observable.fromPromise(results);
+
+				}
+
 				let searchParams = {};
 				searchParams[field.options.search_by] = query;
+
 				return this.api
 					.post(field.options.source, searchParams, true)
 					.map((items) => {
@@ -170,6 +222,8 @@ export class Form {
 					})
 			},
 			render: (item) => {
+				console.debug('modal.item.render', item._isOffline, field.options, item);
+				if(item._isOffline) return item[field.options.offline_label];
 				return item[field.options.label];
 			}
 		});

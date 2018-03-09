@@ -29,12 +29,14 @@
 
 	<ion-list>
 		<ion-item>
-			<h3>Versão 1.0.3</h3>
-			<small>Build 280417-1315</small>
+			<h3>Versão 1.4.2</h3>
+			<small>Build A2017.2211.1300</small>
 		</ion-item>
 		<ion-item>
-			<h3>API Endpoint:</h3>
-			<small>{{api.getURI()}}</small>
+			<ion-label stacked>API Endpoint:</ion-label>
+			<ion-select [(ngModel)]="settings.APIRoot" okText="Alterar" cancelText="Cancelar">
+				<ion-option style="font-size: 10px;" *ngFor="let endpoint of settings.availableAPIRoots" value="{{endpoint}}">{{endpoint}}</ion-option>
+			</ion-select>
 		</ion-item>
 	</ion-list>
 

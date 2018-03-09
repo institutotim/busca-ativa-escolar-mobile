@@ -1,10 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
 import {NavController, NavParams, ViewController} from 'ionic-angular';
-import {AuthService} from "../../providers/auth.service";
-import {ChildrenService} from "../../providers/children.service";
-import {Child} from "../../entities/Child";
-import {ChildViewPage} from "../child-view/child-view";
 import {AuthHttp} from "angular2-jwt";
 import {APIService} from "../../../providers/api.service";
 

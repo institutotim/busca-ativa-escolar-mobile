@@ -1,5 +1,8 @@
 <ion-tabs #tabs>
   <ion-tab [root]="tab1Root" tabTitle="Novo alerta" tabIcon="add-circle"></ion-tab>
-  <ion-tab [root]="tab2Root" *ngIf="!isAgenteComunitario()" tabTitle="Minhas atribuições" tabIcon="checkbox"></ion-tab>
+  <ion-tab [root]="tab2Root" *ngIf="!isAgenteComunitario()" tabTitle="Atribuições" tabIcon="checkbox"></ion-tab>
+  <ion-tab [root]="tab3Root" *ngIf="true" tabTitle="Sincronizar" tabIcon="cloud-upload"></ion-tab>
   <ion-tab *ngIf="true" (ionSelect)="logout()" tabTitle="Sair" tabIcon="exit"></ion-tab>
 </ion-tabs>
+<div *ngIf="!isOnline()" class="banner banner-offline-mode">Offline - Conexão indisponível</div>
+<div *ngIf="!isProduction()" class="banner banner-is-test">Ambiente de testes</div>

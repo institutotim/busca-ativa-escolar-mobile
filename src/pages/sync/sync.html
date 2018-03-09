@@ -1,0 +1,51 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Sincronizar</ion-title>
+	</ion-navbar>
+</ion-header>
+<ion-content>
+	<ion-card>
+		<ion-list>
+			<ion-item color="secondary" *ngIf="connectivity.isOnline()">
+				Modo Online
+			</ion-item>
+
+			<ion-item color="danger" *ngIf="!connectivity.isOnline()">
+				Modo Offline
+			</ion-item>
+		</ion-list>
+	</ion-card>
+
+	<ion-card>
+		<ion-card-content>
+			<p>Para usar o aplicativo offline (sem conexão com a internet), você deve primeiro baixar os dados para uso offline, usando a opção <strong>Baixar dados para uso offline</strong> no menu abaixo.</p>
+			<p>Quando o aplicativo estiver sem conexão, os alertas e pesquisas salvos serão guardados localmente no seu dispositivo.</p>
+			<p>Quando a conexão estiver disponível novamente, os dados coletados poderão ser publicados na plataforma usando a opção <strong>Publicar dados na plataforma</strong> no menu abaixo.</p>
+		</ion-card-content>
+	</ion-card>
+
+	<ion-list>
+		<button ion-item clear icon-left [disabled]="!connectivity.isOnline()" (click)="doFullUpload()">
+			<ion-icon name="cloud-upload"></ion-icon>
+			Publicar dados na plataforma
+		</button>
+		<button ion-item clear icon-left [disabled]="!connectivity.isOnline()" (click)="doFullDownload()">
+			<ion-icon name="cloud-download"></ion-icon>
+			Baixar dados para uso offline
+		</button>
+		<div ion-item clear>
+			<h3>Último download:</h3>
+			<strong>{{getLastFullSync()}}</strong>
+		</div>
+		<div ion-item clear>
+			Alertas à enviar: <strong>{{queue.getAlerts().length || 0}}</strong>
+		</div>
+		<div ion-item clear>
+			Pesquisas à enviar: <strong>{{queue.getChildUpdates().length || 0}}</strong>
+		</div>
+		<button ion-item clear icon-left color="danger" (click)="clearQueues()">
+			<ion-icon name="trash"></ion-icon>
+			<small>Cancelar todos os ítens à enviar</small>
+		</button>
+	</ion-list>
+</ion-content>

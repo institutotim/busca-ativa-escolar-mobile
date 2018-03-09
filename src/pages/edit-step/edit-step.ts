@@ -9,6 +9,9 @@ import {UtilsService} from "../../providers/utils.service";
 import {Form, FormBuilderService} from "../../providers/form-builder.service";
 import {Observable} from "rxjs";
 import {MyAttributionsPage} from "../my-attributions/my-attributions";
+import {ConnectivityService} from "../../providers/connectivity.service";
+import {QueuedUpdatesService} from "../../providers/queued-updates.service";
+import {LocalDataService} from "../../providers/local-data.service";
 
 @Component({
 	selector: 'page-edit-step',
@@ -34,8 +37,11 @@ export class EditStepPage implements OnInit {
 		public auth: AuthService,
 		public children: ChildrenService,
 	    public utils: UtilsService,
+	    public localData: LocalDataService,
 	    public staticData: StaticDataService,
 	    public formBuilder: FormBuilderService,
+	    public connectivity: ConnectivityService,
+	    public queue: QueuedUpdatesService
 	) {
 		this.child = navParams.get('child');
 	}
@@ -68,6 +74,7 @@ export class EditStepPage implements OnInit {
 				if(++alreadyLoaded === 2) this.setIdle();
 
 			})
+
 	}
 
 	setLoading(message) {
@@ -87,11 +94,49 @@ export class EditStepPage implements OnInit {
 		this.loader.dismiss();
 	}
 
+	saveLocally(shouldComplete = false) {
+		this.setLoading("Armazenando...");
 
+		if(shouldComplete) {
+			this.step.shouldComplete = true;
+		}
+
+		return this.queue.queueChildUpdate(this.step.id, this.step)
+			.then((res) => {
+				this.localData.save('steps/' + this.step.type + '/' + this.step.id, this.step);
+			})
+			.then((res) => {
+				console.log("[edit_step] save.offline => ", this.step, res);
+
+				this.setIdle();
+
+				this.toastCtrl.create({
+					cssClass: 'toast-success',
+					message: 'Dados armazenados com sucesso!',
+					duration: 6000,
+					showCloseButton: true,
+					closeButtonText: 'OK'
+				}).present().catch(() => {});
+
+			})
+			.catch((error) => {
+				this.setIdle();
+
+				this.toastCtrl.create({
+					cssClass: 'toast-error',
+					message: 'Ocorreu um erro ao salvar os dados!',
+					duration: 3000
+				}).present().catch(() => {});
+			});
+	}
 
 	saveOnline() {
 
 		this.form.rebuild(this.formTree, this.fields);
+
+		if(!this.connectivity.isOnline()) {
+			return this.saveLocally();
+		}
 
 		this.setLoading("Salvando...");
 
@@ -110,6 +155,14 @@ export class EditStepPage implements OnInit {
 				duration: 3000
 			}).present().catch(() => {});
 
+		}, (error) => {
+			this.setIdle();
+
+			this.toastCtrl.create({
+				cssClass: 'toast-error',
+				message: 'Ocorreu um erro ao salvar os dados!',
+				duration: 3000
+			}).present().catch(() => {});
 		});
 	}
 
@@ -177,12 +230,24 @@ export class EditStepPage implements OnInit {
 
 			this.navCtrl.popTo(MyAttributionsPage);
 
+		}, (error) => {
+			this.setIdle();
+
+			this.toastCtrl.create({
+				cssClass: 'toast-error',
+				message: 'Ocorreu um erro ao concluir a etapa!',
+				duration: 3000
+			}).present().catch(() => {});
 		})
 	}
 
 	saveAndComplete() {
 
 		this.form.rebuild(this.formTree, this.fields);
+
+		if(!this.connectivity.isOnline()) {
+			return this.saveLocally(true);
+		}
 
 		this.setLoading("Salvando...");
 
